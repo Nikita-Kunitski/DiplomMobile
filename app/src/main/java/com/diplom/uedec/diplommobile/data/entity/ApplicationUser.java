@@ -14,7 +14,8 @@ import java.util.List;
     public class ApplicationUser {
        @NonNull
        @PrimaryKey
-        private String Id;
+        private int Id;
+       private  String Email;
         private String TeacherNumber;
         private String StudentNumber;
         private String FirstName;
@@ -23,14 +24,34 @@ import java.util.List;
         private int Group;
         private int Course;
 
+    public ApplicationUser(  String firstName, String lastName, String patronymic, int group, int course) {
+        FirstName = firstName;
+        LastName = lastName;
+        Patronymic = patronymic;
+        Group = group;
+        Course = course;
+    }
+
+    public ApplicationUser(String email) {
+        Email = email;
+    }
+
     public ApplicationUser() {
     }
 
-    public String getId() {
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public int getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         Id = id;
     }
 

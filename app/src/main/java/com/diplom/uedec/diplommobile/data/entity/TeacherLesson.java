@@ -2,6 +2,7 @@ package com.diplom.uedec.diplommobile.data.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -14,7 +15,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
             @ForeignKey(entity = ApplicationUser.class,parentColumns = "Id",childColumns = "teacherId",onDelete = CASCADE),
             @ForeignKey(entity = Lesson.class,parentColumns = "Id",childColumns = "lessonId",onDelete = CASCADE)})
 public class TeacherLesson {
+    @NonNull
     private final int teacherId;
+    @NonNull
     private final int lessonId;
     public TeacherLesson(int teacherId, int lessonId)
     {

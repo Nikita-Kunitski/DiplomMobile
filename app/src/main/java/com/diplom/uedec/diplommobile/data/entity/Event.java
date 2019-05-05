@@ -1,12 +1,17 @@
 package com.diplom.uedec.diplommobile.data.entity;
 
+import android.app.FragmentTransaction;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
@@ -31,7 +36,13 @@ public class Event {
     @ColumnInfo(name = "auditorium_id")
     private int AuditoriumId;
     @ColumnInfo(name="teacher_id")
-    private String TeacherId;
+    private int TeacherId;
+    @Ignore
+    private Date dateD;
+    @Ignore
+    private Date startTimeD;
+    @Ignore
+    private Date endTimeD;
 
     public Event() {
     }
@@ -50,6 +61,9 @@ public class Event {
 
     public void setDate(String date) {
         Date = date;
+        Date checkDate =FromStringToDate(Date,"yyyy-MM-dd");
+        if(!checkDate.equals(dateD))
+            dateD=checkDate;
     }
 
     public String getStartTime() {
@@ -58,6 +72,9 @@ public class Event {
 
     public void setStartTime(String startTime) {
         StartTime = startTime;
+        Date checkDate =FromStringToDate(startTime,"HH:mm:ss");
+        if(!checkDate.equals(startTimeD))
+            startTimeD=checkDate;
     }
 
     public String getEndTime() {
@@ -66,6 +83,9 @@ public class Event {
 
     public void setEndTime(String endTime) {
         EndTime = endTime;
+        Date checkDate= FromStringToDate(endTime,"HH:mm:ss");
+        if(!checkDate.equals(endTimeD))
+            endTimeD=checkDate;
     }
 
     public int getCountPeople() {
@@ -100,14 +120,64 @@ public class Event {
         AuditoriumId = auditoriumId;
     }
 
-    public String getTeacherId() {
+    public int getTeacherId() {
         return TeacherId;
     }
 
-    public void setTeacherId(String teacherId) {
+    public void setTeacherId(int teacherId) {
         TeacherId = teacherId;
     }
 
+    public Date getDateD() {
+        return dateD;
+    }
+
+    public void setDateD(Date dateD) {
+        this.dateD = dateD;
+        String checkOldDate=FromDateToString(dateD,"yyyy-MM-dd");
+        if(!checkOldDate.equals(Date))
+            Date=checkOldDate;
+    }
+
+    public Date getStartTimeD() {
+        return startTimeD;
+    }
+
+    public void setStartTimeD(Date startTimeD) {
+        this.startTimeD = startTimeD;
+        String checkOldDate=FromDateToString(startTimeD,"HH:mm:ss");
+        if(!checkOldDate.equals(StartTime))
+            StartTime=checkOldDate;
+    }
+
+    public Date getEndTimeD() {
+        return endTimeD;
+    }
+
+    public void setEndTimeD(Date endTimeD) {
+        this.endTimeD = endTimeD;
+        String checkOldDate=FromDateToString(endTimeD,"HH:mm:ss");
+        if(!checkOldDate.equals(EndTime))
+            EndTime=checkOldDate;
+    }
+
+    public String FromDateToString(Date date, String format){
+        DateFormat df=new SimpleDateFormat(format);
+        return df.format(date);
+    }
+
+    public Date FromStringToDate(String date, String format)
+    {
+        DateFormat df=new SimpleDateFormat(format);
+        Date dateReturn;
+        try {
+            dateReturn=df.parse(date);
+        } catch (ParseException e) {
+            dateReturn=null;
+            e.printStackTrace();
+        }
+        return dateReturn;
+    }
 
 
 }

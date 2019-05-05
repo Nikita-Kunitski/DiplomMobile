@@ -18,6 +18,11 @@ public class Lesson {
     public Lesson() {
     }
 
+    public Lesson(String abbreviation, String name) {
+        Abbreviation = abbreviation;
+        Name = name;
+    }
+
     public int getId() {
         return Id;
     }
