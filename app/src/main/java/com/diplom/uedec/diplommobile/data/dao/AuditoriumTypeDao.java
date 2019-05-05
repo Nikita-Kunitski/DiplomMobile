@@ -19,7 +19,7 @@ public interface AuditoriumTypeDao {
     @Query("SELECT * FROM auditoriumtype")
     List<AuditoriumType> getAll();
 
-    @Query("Select * from auditoriumtype")
+    @Query("Select * from auditoriumtype WHERE Id = :id")
     AuditoriumType getById(int id);
 
     @Insert

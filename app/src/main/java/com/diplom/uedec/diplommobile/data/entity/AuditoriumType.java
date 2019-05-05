@@ -1,5 +1,6 @@
 package com.diplom.uedec.diplommobile.data.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -9,10 +10,13 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class AuditoriumType {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int Id;
     private String AuditoriumAbbreviation;
     private String AuditoriumName;
+
+    public AuditoriumType() {
+    }
 
     public int getId() {
         return Id;
