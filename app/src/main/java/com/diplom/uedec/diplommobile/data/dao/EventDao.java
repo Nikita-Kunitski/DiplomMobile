@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.diplom.uedec.diplommobile.data.entity.Event;
+import com.diplom.uedec.diplommobile.data.entity.EventWithStudents;
+import com.diplom.uedec.diplommobile.data.entity.StudentWithEvents;
 
 import java.util.List;
 
@@ -29,5 +31,9 @@ public interface EventDao {
 
     @Delete
     void delete(Event event);
+
+    @Query("Select * from event")
+    List<EventWithStudents> getEventWithStudents();
+
 
 }

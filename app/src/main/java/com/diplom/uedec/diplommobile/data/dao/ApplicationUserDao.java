@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
+import com.diplom.uedec.diplommobile.data.entity.StudentWithEvents;
+import com.diplom.uedec.diplommobile.data.entity.TeacherWithLessons;
 
 import java.util.List;
 
@@ -29,4 +31,10 @@ public interface ApplicationUserDao {
 
     @Delete
     void delete(ApplicationUser applicationUser);
+
+    @Query("Select * from ApplicationUser")
+    List<StudentWithEvents> getStudentWithEvents();
+
+    @Query("Select * from ApplicationUser")
+    List<TeacherWithLessons> getTeacherWithLessons();
 }

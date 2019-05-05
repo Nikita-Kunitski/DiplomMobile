@@ -24,4 +24,7 @@ public interface StudentEventDao {
 
     @Query("SELECT * FROM StudentEvent WHERE eventId = :eventId")
     List<StudentEvent>getByLessonId(int eventId);
+
+    @Insert
+    void insert(StudentEvent studentEvent);
 }

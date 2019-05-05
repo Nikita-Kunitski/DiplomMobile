@@ -169,6 +169,8 @@ public class Event {
     public Date FromStringToDate(String date, String format)
     {
         DateFormat df=new SimpleDateFormat(format);
+        if(date==null)
+            return null;
         Date dateReturn;
         try {
             dateReturn=df.parse(date);
