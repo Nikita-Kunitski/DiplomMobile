@@ -2,23 +2,30 @@ package com.diplom.uedec.diplommobile.data;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
+import android.os.AsyncTask;
 
-import com.diplom.uedec.diplommobile.data.dao.ApplicationUserDao;
-import com.diplom.uedec.diplommobile.data.dao.AuditoriumDao;
-import com.diplom.uedec.diplommobile.data.dao.AuditoriumTypeDao;
-import com.diplom.uedec.diplommobile.data.dao.LessonDao;
-import com.diplom.uedec.diplommobile.data.dao.TeacherLessonDao;
-import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
-import com.diplom.uedec.diplommobile.data.entity.Auditorium;
-import com.diplom.uedec.diplommobile.data.entity.AuditoriumType;
 
-import java.util.List;
 
 /**
  * Created by uedec on 05.05.2019.
  */
 
 public class App extends Application {
+
+    class CreateDataBase extends AsyncTask<RoomDatabase.Builder<AppDatabase>,Void,AppDatabase>{
+        @Override
+        protected AppDatabase doInBackground(RoomDatabase.Builder<AppDatabase>[] builders) {
+            AppDatabase db=builders[0].build();
+            database=db;
+            return db;
+        }
+        @Override
+        protected void onPostExecute(AppDatabase db)
+        {
+
+        }
+    }
 
     public static App instance;
 
@@ -28,8 +35,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        database = Room.databaseBuilder(this, AppDatabase.class, "database").allowMainThreadQueries()
-                .build();
+        new CreateDataBase().execute(Room.databaseBuilder(instance, AppDatabase.class, "database"));
     }
 
     public static App getInstance() {

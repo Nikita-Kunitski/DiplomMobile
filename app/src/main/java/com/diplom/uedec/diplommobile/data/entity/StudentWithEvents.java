@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StudentWithEvents {
     @Embedded
-    ApplicationUser student;
+    public ApplicationUser student;
     @Relation(parentColumn = "Id",entityColumn = "studentId")
     public List<StudentEvent> events;
 }
