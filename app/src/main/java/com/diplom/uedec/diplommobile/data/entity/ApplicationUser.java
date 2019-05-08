@@ -6,15 +6,11 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-/**
- * Created by uedec on 04.05.2019.
- */
-
 @Entity
     public class ApplicationUser {
        @NonNull
        @PrimaryKey
-        private int Id;
+        private String Id;
        private  String Email;
         private String TeacherNumber;
         private String StudentNumber;
@@ -47,11 +43,11 @@ import java.util.List;
         Email = email;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 

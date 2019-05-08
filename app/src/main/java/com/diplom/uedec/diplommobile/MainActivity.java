@@ -1,54 +1,48 @@
 package com.diplom.uedec.diplommobile;
 
+import android.app.Application;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.diplom.uedec.diplommobile.retrofit.REST;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import com.diplom.uedec.diplommobile.data.App;
+import com.diplom.uedec.diplommobile.data.AppDatabase;
+import com.diplom.uedec.diplommobile.fragments.LoginFragment;
+import com.diplom.uedec.diplommobile.fragments.RegisterFragment;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public void registerFragments() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new RegisterFragment()).commit();
+    }
+    public void loginFragments() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new LoginFragment()).commit();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*AppDatabase db = App.getInstance().getDatabase();
+        AppDatabase db = App.getInstance().getDatabase();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new LoginFragment())
+                    .commit();
+        }
+        /*
         AuditoriumTypeDao auditoriumTypeDao=db.auditoriumTypeDao();
         AuditoriumDao auditoriumDao=db.auditoriumDao();
         ApplicationUserDao applicationUserDao=db.applicationUserDao();
         LessonDao lessonDao=db.lessonDao();
         EventDao eventDao=db.eventDao();
         StudentEventDao studentEventDao=db.studentEventDao();*/
-
-        CookieHandler cookieHandler = new CookieManager();
-
-        Retrofit retrofit=new Retrofit.Builder().baseUrl("http://192.168.163.2:2314/").build();
-        REST REST =retrofit.create(REST.class);
-        Call<Void> call= REST.Auth("admin@gmail.com","10Nikita.");
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-               Log.i("responce-message",response.raw().message());
-                Log.i("responce-headers",response.headers().toString());
-                Log.i("responce-cookie",response.raw().request().headers().get("Cookie")==null?"null":response.raw().request().headers().get("Cookie"));
-                Log.i("responce-headers",response.headers().get("Set-Cookie"));
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.i("responce",t.toString());
-            }
-        });
         /*AuditoriumType auditoriumType=new AuditoriumType();
         auditoriumType.setId(1);
         auditoriumType.setAuditoriumAbbreviation("ЛК");

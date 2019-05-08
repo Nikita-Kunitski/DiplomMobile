@@ -15,9 +15,7 @@ import java.text.SimpleDateFormat;
 
 import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
-/**
- * Created by uedec on 05.05.2019.
- */
+
 @Entity(foreignKeys = {
         @ForeignKey(entity = Lesson.class,parentColumns = "Id", childColumns = "lesson_id", onDelete = SET_NULL),
         @ForeignKey(entity = Auditorium.class,parentColumns = "Id", childColumns = "auditorium_id",onDelete = SET_NULL),
@@ -36,7 +34,7 @@ public class Event {
     @ColumnInfo(name = "auditorium_id")
     private int AuditoriumId;
     @ColumnInfo(name="teacher_id")
-    private int TeacherId;
+    private String TeacherId;
     @Ignore
     private Date dateD;
     @Ignore
@@ -120,11 +118,11 @@ public class Event {
         AuditoriumId = auditoriumId;
     }
 
-    public int getTeacherId() {
+    public String getTeacherId() {
         return TeacherId;
     }
 
-    public void setTeacherId(int teacherId) {
+    public void setTeacherId(String teacherId) {
         TeacherId = teacherId;
     }
 
@@ -161,12 +159,12 @@ public class Event {
             EndTime=checkOldDate;
     }
 
-    public String FromDateToString(Date date, String format){
+    private String FromDateToString(Date date, String format){
         DateFormat df=new SimpleDateFormat(format);
         return df.format(date);
     }
 
-    public Date FromStringToDate(String date, String format)
+    private Date FromStringToDate(String date, String format)
     {
         DateFormat df=new SimpleDateFormat(format);
         if(date==null)

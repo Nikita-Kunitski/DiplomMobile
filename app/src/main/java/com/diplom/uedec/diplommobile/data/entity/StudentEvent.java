@@ -2,12 +2,10 @@ package com.diplom.uedec.diplommobile.data.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-/**
- * Created by uedec on 05.05.2019.
- */
 
 @Entity( primaryKeys = {"studentId","eventId"},foreignKeys =
         {
@@ -15,15 +13,16 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                 @ForeignKey(entity = Event.class,parentColumns = "Id", childColumns = "eventId", onDelete = CASCADE)
         })
 public class StudentEvent {
-    private final int studentId;
+    @NonNull
+    private final String studentId;
     private final int eventId;
-    public StudentEvent(int studentId, int eventId)
+    public StudentEvent(String studentId, int eventId)
     {
         this.studentId=studentId;
         this.eventId=eventId;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 

@@ -12,16 +12,13 @@ import com.diplom.uedec.diplommobile.data.entity.TeacherWithLessons;
 
 import java.util.List;
 
-/**
- * Created by uedec on 04.05.2019.
- */
 @Dao
 public interface ApplicationUserDao {
     @Query("SELECT * FROM ApplicationUser")
     List<ApplicationUser> getAll();
 
     @Query("SELECT * FROM ApplicationUser WHERE Id = :id")
-    ApplicationUser getById(int id);
+    ApplicationUser getById(String id);
 
     @Insert
     void insert(ApplicationUser applicationUser);
