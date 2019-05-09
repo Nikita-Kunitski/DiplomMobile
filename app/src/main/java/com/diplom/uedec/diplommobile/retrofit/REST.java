@@ -1,6 +1,7 @@
 package com.diplom.uedec.diplommobile.retrofit;
 
 import com.diplom.uedec.diplommobile.data.entity.Event;
+import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.fragments.EventFragment;
 
 import java.util.List;
@@ -21,5 +22,5 @@ public interface REST {
     Call<Void> Register(@Body RequestRegisterStudent requestRegisterStudent);
 
     @GET("api/events")
-    Call<List<EventFragment.EventWithAllMembers>> getAllEvents();
+    Call<List<EventWithAllMembers>> getAllEvents();
 }

@@ -1,6 +1,6 @@
 package com.diplom.uedec.diplommobile.fragments;
 
-import android.arch.persistence.room.Embedded;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -9,18 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.diplom.uedec.diplommobile.DetailEventActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
-import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
-import com.diplom.uedec.diplommobile.data.entity.Auditorium;
-import com.diplom.uedec.diplommobile.data.entity.Event;
-import com.diplom.uedec.diplommobile.data.entity.Lesson;
+import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.retrofit.REST;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,10 +32,14 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
 
     @Override
     public void onEventClick(int position) {
-        Log.i("recyclerTest", String.valueOf(position));
+        Log.i("test",String.valueOf(position));
+        Intent intent=new Intent(getActivity(), DetailEventActivity.class);
+        EventWithAllMembers item=result.get(position);
+        intent.putExtra("EventWithAllMembers",item);
+        startActivity(intent);
     }
 
-    public class EventWithAllMembers
+   /* public class EventWithAllMembers implements Serializable
     {
         @SerializedName("Id")
         @Expose
@@ -84,7 +82,7 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
         @Embedded
         public Lesson lesson;
 
-    }
+    }*/
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {

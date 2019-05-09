@@ -1,7 +1,10 @@
 package com.diplom.uedec.diplommobile.data.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
@@ -10,44 +13,44 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @Entity
-    public class ApplicationUser {
-        @NonNull
-        @PrimaryKey
-        @SerializedName("Id")
-        @Expose
-        private String Id;
+public class ApplicationUser implements Parcelable {
+    @NonNull
+    @PrimaryKey
+    @SerializedName("Id")
+    @Expose
+    private String Id;
 
-        @SerializedName("Email")
-        @Expose
-        private  String Email;
+    @SerializedName("Email")
+    @Expose
+    private  String Email;
 
-        @SerializedName("TeacherNumber")
-        @Expose
-        private String TeacherNumber;
+    @SerializedName("TeacherNumber")
+    @Expose
+    private String TeacherNumber;
 
-        @SerializedName("StudentNumber")
-        @Expose
-        private String StudentNumber;
+    @SerializedName("StudentNumber")
+    @Expose
+    private String StudentNumber;
 
-        @SerializedName("FirstName")
-        @Expose
-        private String FirstName;
+    @SerializedName("FirstName")
+    @Expose
+    private String FirstName;
 
-        @SerializedName("LastName")
-        @Expose
-        private String LastName;
+    @SerializedName("LastName")
+    @Expose
+    private String LastName;
 
-        @SerializedName("Patronymic")
-        @Expose
-        private String Patronymic;
+    @SerializedName("Patronymic")
+    @Expose
+    private String Patronymic;
 
-        @SerializedName("Group")
-        @Expose
-        private int Group;
+    @SerializedName("Group")
+    @Expose
+    private int Group;
 
-        @SerializedName("Course")
-        @Expose
-        private int Course;
+    @SerializedName("Course")
+    @Expose
+    private int Course;
 
     public ApplicationUser(  String firstName, String lastName, String patronymic, int group, int course) {
         FirstName = firstName;
@@ -135,4 +138,48 @@ import java.util.List;
     public void setCourse(int course) {
         Course = course;
     }
+
+    protected ApplicationUser(Parcel in) {
+        Id = in.readString();
+        Email = in.readString();
+        TeacherNumber = in.readString();
+        StudentNumber = in.readString();
+        FirstName = in.readString();
+        LastName = in.readString();
+        Patronymic = in.readString();
+        Group = in.readInt();
+        Course = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Id);
+        dest.writeString(Email);
+        dest.writeString(TeacherNumber);
+        dest.writeString(StudentNumber);
+        dest.writeString(FirstName);
+        dest.writeString(LastName);
+        dest.writeString(Patronymic);
+        dest.writeInt(Group);
+        dest.writeInt(Course);
+    }
+
+    @SuppressWarnings("unused")
+    @Ignore
+    public static final Parcelable.Creator<ApplicationUser> CREATOR = new Parcelable.Creator<ApplicationUser>() {
+        @Override
+        public ApplicationUser createFromParcel(Parcel in) {
+            return new ApplicationUser(in);
+        }
+
+        @Override
+        public ApplicationUser[] newArray(int size) {
+            return new ApplicationUser[size];
+        }
+    };
 }

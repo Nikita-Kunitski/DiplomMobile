@@ -1,7 +1,10 @@
 package com.diplom.uedec.diplommobile.data.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +14,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 @Entity
-public class Lesson {
+public class Lesson implements Parcelable {
     @PrimaryKey
     @SerializedName("Id")
     @Expose
@@ -68,4 +71,38 @@ public class Lesson {
     public void setCourse(int course) {
         Course = course;
     }
+
+    protected Lesson(Parcel in) {
+        Id = in.readInt();
+        Abbreviation = in.readString();
+        Name = in.readString();
+        Course = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(Id);
+        dest.writeString(Abbreviation);
+        dest.writeString(Name);
+        dest.writeInt(Course);
+    }
+
+    @SuppressWarnings("unused")
+    @Ignore
+    public static final Parcelable.Creator<Lesson> CREATOR = new Parcelable.Creator<Lesson>() {
+        @Override
+        public Lesson createFromParcel(Parcel in) {
+            return new Lesson(in);
+        }
+
+        @Override
+        public Lesson[] newArray(int size) {
+            return new Lesson[size];
+        }
+    };
 }

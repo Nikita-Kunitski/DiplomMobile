@@ -3,7 +3,10 @@ package com.diplom.uedec.diplommobile.data.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -16,7 +19,7 @@ import static android.arch.persistence.room.ForeignKey.SET_NULL;
  */
 
 @Entity(foreignKeys = @ForeignKey(entity = AuditoriumType.class,parentColumns = "Id", childColumns = "auditoriumtype_id",onDelete = SET_NULL))
-public class Auditorium {
+public class Auditorium implements Parcelable {
 
     @SerializedName("Id")
     @Expose
@@ -69,4 +72,36 @@ public class Auditorium {
     public void setAuditoriumTypeId(int auditoriumTypeId) {
         AuditoriumTypeId = auditoriumTypeId;
     }
+
+    protected Auditorium(Parcel in) {
+        Id = in.readInt();
+        AuditoriumName = in.readString();
+        AuditoriumCapacity = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(Id);
+        dest.writeString(AuditoriumName);
+        dest.writeInt(AuditoriumCapacity);
+    }
+
+    @SuppressWarnings("unused")
+    @Ignore
+    public static final Parcelable.Creator<Auditorium> CREATOR = new Parcelable.Creator<Auditorium>() {
+        @Override
+        public Auditorium createFromParcel(Parcel in) {
+            return new Auditorium(in);
+        }
+
+        @Override
+        public Auditorium[] newArray(int size) {
+            return new Auditorium[size];
+        }
+    };
 }

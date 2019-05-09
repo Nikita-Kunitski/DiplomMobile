@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.diplom.uedec.diplommobile.R;
+import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.fragments.EventFragment;
 
 import java.text.DateFormat;
@@ -21,11 +22,11 @@ import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private LayoutInflater inflater;
-    private List<EventFragment.EventWithAllMembers> _eventWithAllMembersList;
+    private List<EventWithAllMembers> _eventWithAllMembersList;
 
     private onEventListner monEventListner;
 
-    public DataAdapter(Context context, List<EventFragment.EventWithAllMembers> eventWithAllMembersList, onEventListner onEventListner) {
+    public DataAdapter(Context context, List<EventWithAllMembers> eventWithAllMembersList, onEventListner onEventListner) {
         this._eventWithAllMembersList = eventWithAllMembersList;
         this.inflater = LayoutInflater.from(context);
         this.monEventListner=onEventListner;
@@ -40,7 +41,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
-        EventFragment.EventWithAllMembers eventWithAllMembers = _eventWithAllMembersList.get(position);
+        EventWithAllMembers eventWithAllMembers = _eventWithAllMembersList.get(position);
         holder.eventName.setText(eventWithAllMembers.eventName);
         holder.auditorium.setText("Аудитория: "+eventWithAllMembers.auditorium.getAuditoriumName());
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
