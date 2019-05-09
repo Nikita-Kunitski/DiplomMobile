@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.os.AsyncTask;
 
+import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 
 
 /**
@@ -28,7 +29,7 @@ public class App extends Application {
     }
 
     public static App instance;
-
+    public static ApplicationUser user;
     private AppDatabase database;
 
     @Override

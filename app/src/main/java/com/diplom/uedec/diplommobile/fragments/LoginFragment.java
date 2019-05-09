@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.MainActivity;
 import com.diplom.uedec.diplommobile.R;
+import com.diplom.uedec.diplommobile.data.App;
+import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.concurrent.TimeUnit;
@@ -27,6 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by uedec on 08.05.2019.
@@ -42,29 +45,28 @@ public class LoginFragment extends Fragment {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .build();
-        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).build();
+        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
         REST REST =retrofit.create(REST.class);
-        Call<Void> call= REST.Auth(email,password);
-
-        call.enqueue(new Callback<Void>() {
+        Call<ApplicationUser> call = REST.Auth(email,password);
+        call.enqueue(new Callback<ApplicationUser>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ApplicationUser> call, Response<ApplicationUser> response) {
                 Log.i("responce-message",response.raw().message());
                 Log.i("responce-headers",response.headers().toString());
                 Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
                 Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
-                if(response.raw().message().equals("OK")){
-                    // TODO сделать лоадер
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
-                }
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 login.setEnabled(true);
                 register.setEnabled(true);
+                if(response.raw().message().equals("OK")){
+                    App.user=response.body();
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
+                }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ApplicationUser> call, Throwable t) {
                 Log.i("responce",t.toString());
                 Log.i("responce-headers","LOX");
                 Toast.makeText(getActivity(),"Проблемы с сетью. Попробуйте еще раз",Toast.LENGTH_SHORT).show();
@@ -73,6 +75,7 @@ public class LoginFragment extends Fragment {
                 register.setEnabled(true);
             }
         });
+
         progressBar.setVisibility(ProgressBar.VISIBLE);
         login.setEnabled(false);
         register.setEnabled(false);

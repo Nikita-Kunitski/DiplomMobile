@@ -1,6 +1,7 @@
 package com.diplom.uedec.diplommobile;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,19 +10,53 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
+import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
+import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class DetailEventActivity extends AppCompatActivity {
 
+    public void SubscribeToEvent()
+    {
+        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
+        REST REST =retrofit.create(REST.class);
+        StudentEvent studentEvent=new StudentEvent(App.user.getId(),eventWithAllMembers.id);
+        Call<Void> call = REST.Subscribe(studentEvent);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.i("responce-message",response.raw().message());
+                Toast.makeText(getApplicationContext(),"Вы записались на это занятие",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(DetailEventActivity.this,HomeActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i("responce",t.toString());
+                Toast.makeText(getApplicationContext(),"Возникла ошибка при подписке",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    EventWithAllMembers eventWithAllMembers;
     TextView eventName, dateAndTime, auditorium, lesson, teacher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventWithAllMembers eventWithAllMembers;
+
         eventWithAllMembers = (EventWithAllMembers) getIntent().getParcelableExtra("EventWithAllMembers");
         setTitle(eventWithAllMembers.eventName);
         setContentView(R.layout.activity_detail_event);
@@ -45,8 +80,7 @@ public class DetailEventActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                SubscribeToEvent();
             }
         });
     }

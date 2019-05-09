@@ -39,51 +39,6 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
         startActivity(intent);
     }
 
-   /* public class EventWithAllMembers implements Serializable
-    {
-        @SerializedName("Id")
-        @Expose
-        public int id;
-        @SerializedName("Date")
-        @Expose
-        public Date date;
-        @SerializedName("StartTime")
-        @Expose
-        public Date startTime;
-        @SerializedName("EndTime")
-        @Expose
-        public Date endTime;
-        @SerializedName("CountPeople")
-        @Expose
-        public int countPeople;
-        @SerializedName("LessonId")
-        @Expose
-        public int lessonId;
-
-        @SerializedName("EventName")
-        @Expose
-        public String eventName;
-        @SerializedName("AuditoriumId")
-        @Expose
-        public int auditoriumId;
-        @SerializedName("TeacherId")
-        @Expose
-        public String teacheId;
-        @SerializedName("Auditorium")
-        @Expose
-        @Embedded
-        public Auditorium auditorium;
-        @SerializedName("Teacher")
-        @Expose
-        @Embedded
-        public ApplicationUser teacher;
-        @SerializedName("Lesson")
-        @Expose
-        @Embedded
-        public Lesson lesson;
-
-    }*/
-
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {
         DataAdapter adapter = new DataAdapter(getContext(), result, this);
