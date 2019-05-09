@@ -3,12 +3,14 @@ package com.diplom.uedec.diplommobile.fragments;
 import android.arch.persistence.room.Embedded;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.diplom.uedec.diplommobile.R;
+import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.data.entity.Auditorium;
 import com.diplom.uedec.diplommobile.data.entity.Event;
@@ -79,6 +81,8 @@ public class EventFragment extends Fragment {
 
     }
 
+     List<EventWithAllMembers> result;
+    RecyclerView recyclerView;
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState)
@@ -87,6 +91,8 @@ public class EventFragment extends Fragment {
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEvents();
+        recyclerView = (RecyclerView)view.findViewById(R.id.list);
+
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
             @Override
             public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {
@@ -94,7 +100,9 @@ public class EventFragment extends Fragment {
                 Log.i("responce-headers",response.headers().toString());
                 Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
                 Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
-                List<EventWithAllMembers> list=response.body();
+                result=response.body();
+                DataAdapter adapter = new DataAdapter(getContext(), result);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
