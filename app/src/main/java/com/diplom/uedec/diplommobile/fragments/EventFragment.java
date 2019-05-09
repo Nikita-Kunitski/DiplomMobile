@@ -33,8 +33,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by uedec on 08.05.2019.
  */
 
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements DataAdapter.onEventListner {
 
+
+    @Override
+    public void onEventClick(int position) {
+        Log.i("recyclerTest", String.valueOf(position));
+    }
 
     public class EventWithAllMembers
     {
@@ -81,6 +86,12 @@ public class EventFragment extends Fragment {
 
     }
 
+    public void SetAdapter(List<EventWithAllMembers> mresult)
+    {
+        DataAdapter adapter = new DataAdapter(getContext(), result, this);
+        recyclerView.setAdapter(adapter);
+    }
+
      List<EventWithAllMembers> result;
     RecyclerView recyclerView;
     @Override
@@ -92,7 +103,7 @@ public class EventFragment extends Fragment {
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEvents();
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
-
+        final EventFragment onEventList=this;
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
             @Override
             public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {
@@ -101,8 +112,7 @@ public class EventFragment extends Fragment {
                 Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
                 Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
                 result=response.body();
-                DataAdapter adapter = new DataAdapter(getContext(), result);
-                recyclerView.setAdapter(adapter);
+                SetAdapter(result);
             }
 
             @Override
@@ -110,6 +120,8 @@ public class EventFragment extends Fragment {
                 Log.i("responce-headers",t.getMessage());
             }
         });
+
+
         return view;
     }
 }

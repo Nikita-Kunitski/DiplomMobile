@@ -20,6 +20,9 @@ import com.diplom.uedec.diplommobile.MainActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +39,9 @@ public class LoginFragment extends Fragment {
     ProgressBar progressBar;
 
     public void authentication(String email,String password){
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .build();
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).build();
         REST REST =retrofit.create(REST.class);
         Call<Void> call= REST.Auth(email,password);
