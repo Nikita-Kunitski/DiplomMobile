@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.diplom.uedec.diplommobile.MainActivity;
@@ -26,7 +27,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RegisterFragment extends Fragment {
     Button back,register;
     TextInputEditText firstName, lastName, patronymic, group, course, studentNumber,email,password;
-
+    ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -42,6 +43,7 @@ public class RegisterFragment extends Fragment {
         studentNumber = view.findViewById(R.id.studentNumber);
         email=view.findViewById(R.id.email);
         password=view.findViewById(R.id.password);
+        progressBar=view.findViewById(R.id.progressBar2);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,18 +71,31 @@ public class RegisterFragment extends Fragment {
                         Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
                         if(response.raw().message().equals("OK")) {
                             Toast.makeText(getActivity(),"Регистрация прошла успешно",Toast.LENGTH_SHORT).show();
+                            back.setEnabled(true);
+                            register.setEnabled(true);
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                             ((MainActivity) getActivity()).loginFragments();//
                         }
                         else
                             Toast.makeText(getActivity(),"Пользователь с таким email уже существует",Toast.LENGTH_SHORT).show();
+                            back.setEnabled(true);
+                            register.setEnabled(true);
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Log.i("responce",t.toString());
                         Log.i("responce-headers","LOX");
+                        Toast.makeText(getActivity(),"Ошибка во время регистрации",Toast.LENGTH_SHORT).show();
+                        back.setEnabled(true);
+                        register.setEnabled(true);
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
                     }
                 });
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                back.setEnabled(false);
+                register.setEnabled(false);
             }
         });
         return view;

@@ -1,6 +1,7 @@
 package com.diplom.uedec.diplommobile.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 import com.diplom.uedec.diplommobile.HomeActivity;
@@ -30,6 +33,7 @@ public class LoginFragment extends Fragment {
 
     TextInputEditText email,password;
     Button login, register;
+    ProgressBar progressBar;
 
     public void authentication(String email,String password){
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).build();
@@ -48,14 +52,26 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
                 }
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                login.setEnabled(true);
+                register.setEnabled(true);
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.i("responce",t.toString());
                 Log.i("responce-headers","LOX");
+                Toast.makeText(getActivity(),"Проблемы с сетью. Попробуйте еще раз",Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                login.setEnabled(true);
+                register.setEnabled(true);
             }
         });
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+        login.setEnabled(false);
+        register.setEnabled(false);
+
+
     }
 
     @Override
@@ -67,6 +83,7 @@ public class LoginFragment extends Fragment {
         password = view.findViewById(R.id.password);
         login = view.findViewById(R.id.log_in);
         register = view.findViewById(R.id.register);
+        progressBar=view.findViewById(R.id.progressBar);
         //сделать проверку полей
         login.setOnClickListener(new View.OnClickListener() {
             @Override
