@@ -41,7 +41,7 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {
-        DataAdapter adapter = new DataAdapter(getContext(), result, this);
+        DataAdapter adapter = new DataAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -56,7 +56,6 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEvents();
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
-        final EventFragment onEventList=this;
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
             @Override
             public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {

@@ -2,6 +2,7 @@ package com.diplom.uedec.diplommobile;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,8 +13,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.diplom.uedec.diplommobile.async.WriteToDataBase;
 import com.diplom.uedec.diplommobile.data.App;
+import com.diplom.uedec.diplommobile.data.AppDatabase;
+import com.diplom.uedec.diplommobile.data.dao.ApplicationUserDao;
+import com.diplom.uedec.diplommobile.data.dao.AuditoriumDao;
+import com.diplom.uedec.diplommobile.data.dao.EventDao;
+import com.diplom.uedec.diplommobile.data.dao.LessonDao;
+import com.diplom.uedec.diplommobile.data.dao.StudentEventDao;
+import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
+import com.diplom.uedec.diplommobile.data.entity.Auditorium;
+import com.diplom.uedec.diplommobile.data.entity.Event;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
+import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
@@ -28,6 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailEventActivity extends AppCompatActivity {
 
+
+
     public void SubscribeToEvent()
     {
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
@@ -39,6 +53,7 @@ public class DetailEventActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.i("responce-message",response.raw().message());
                 Toast.makeText(getApplicationContext(),"Вы записались на это занятие",Toast.LENGTH_SHORT).show();
+                new WriteToDataBase().execute(eventWithAllMembers);
                 Intent intent=new Intent(DetailEventActivity.this,HomeActivity.class);
                 startActivity(intent);
             }

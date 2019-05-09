@@ -18,7 +18,7 @@ import static android.arch.persistence.room.ForeignKey.SET_NULL;
  * Created by uedec on 04.05.2019.
  */
 
-@Entity(foreignKeys = @ForeignKey(entity = AuditoriumType.class,parentColumns = "Id", childColumns = "auditoriumtype_id",onDelete = SET_NULL))
+@Entity//(foreignKeys = @ForeignKey(entity = AuditoriumType.class,parentColumns = "Id", childColumns = "auditoriumtype_id",onDelete = SET_NULL))
 public class Auditorium implements Parcelable {
 
     @SerializedName("Id")
@@ -35,7 +35,7 @@ public class Auditorium implements Parcelable {
     private int AuditoriumCapacity;
     @SerializedName("AuditoriumTypeId")
     @Expose
-    @ColumnInfo(name = "auditoriumtype_id")
+    //@ColumnInfo(name = "auditoriumtype_id")
     private int AuditoriumTypeId;
 
     public Auditorium() {

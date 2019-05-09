@@ -77,6 +77,18 @@ public class Event {
     public Event() {
     }
 
+    public Event(int id, String date, String startTime, String endTime, int countPeople,
+                 int lessonId, String eventName, String teacherId, int auditoriumId){
+        this.Id=id;
+        this.Date=date;
+        this.StartTime=startTime;
+        this.EndTime=endTime;
+        this.CountPeople=countPeople;
+        this.LessonId=lessonId;
+        this.TeacherId=teacherId;
+        this.AuditoriumId=auditoriumId;
+        this.EventName=eventName;
+    }
     public int getId() {
         return Id;
     }
