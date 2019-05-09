@@ -4,20 +4,49 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 @Entity
     public class ApplicationUser {
-       @NonNull
-       @PrimaryKey
+        @NonNull
+        @PrimaryKey
+        @SerializedName("Id")
+        @Expose
         private String Id;
-       private  String Email;
+
+        @SerializedName("Email")
+        @Expose
+        private  String Email;
+
+        @SerializedName("TeacherNumber")
+        @Expose
         private String TeacherNumber;
+
+        @SerializedName("StudentNumber")
+        @Expose
         private String StudentNumber;
+
+        @SerializedName("FirstName")
+        @Expose
         private String FirstName;
+
+        @SerializedName("LastName")
+        @Expose
         private String LastName;
+
+        @SerializedName("Patronymic")
+        @Expose
         private String Patronymic;
+
+        @SerializedName("Group")
+        @Expose
         private int Group;
+
+        @SerializedName("Course")
+        @Expose
         private int Course;
 
     public ApplicationUser(  String firstName, String lastName, String patronymic, int group, int course) {

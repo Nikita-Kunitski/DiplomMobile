@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.MainActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.retrofit.REST;
@@ -20,6 +21,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+/**
+ * Created by uedec on 08.05.2019.
+ */
 
 public class LoginFragment extends Fragment {
 
@@ -40,7 +45,8 @@ public class LoginFragment extends Fragment {
                 Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
                 if(response.raw().message().equals("OK")){
                     // TODO сделать лоадер
-
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
                 }
             }
 

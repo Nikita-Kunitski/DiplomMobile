@@ -5,6 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
@@ -14,10 +17,21 @@ import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
 @Entity(foreignKeys = @ForeignKey(entity = AuditoriumType.class,parentColumns = "Id", childColumns = "auditoriumtype_id",onDelete = SET_NULL))
 public class Auditorium {
+
+    @SerializedName("Id")
+    @Expose
     @PrimaryKey
     private int Id;
+
+    @SerializedName("AuditoriumName")
+    @Expose
     private String AuditoriumName;
+
+    @SerializedName("AuditoriumCapacity")
+    @Expose
     private int AuditoriumCapacity;
+    @SerializedName("AuditoriumTypeId")
+    @Expose
     @ColumnInfo(name = "auditoriumtype_id")
     private int AuditoriumTypeId;
 
