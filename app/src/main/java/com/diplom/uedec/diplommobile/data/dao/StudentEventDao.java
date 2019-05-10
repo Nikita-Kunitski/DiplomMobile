@@ -27,4 +27,6 @@ public interface StudentEventDao {
 
     @Insert
     void insert(StudentEvent studentEvent);
+    @Delete
+    void delete(StudentEvent studentEvent);
 }

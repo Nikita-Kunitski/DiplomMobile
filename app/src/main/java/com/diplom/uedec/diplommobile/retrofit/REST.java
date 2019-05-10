@@ -28,4 +28,7 @@ public interface REST {
 
     @POST("api/events/subscribe")
     Call<Void> Subscribe(@Body StudentEvent studentEvent);
+
+    @POST("api/events/unsubscribe")
+    Call<Void> Unsubscribe(@Body StudentEvent studentEvent);
 }

@@ -51,6 +51,7 @@ public class WriteToDataBase extends AsyncTask<EventWithAllMembers,Void,Void> {
                                 eventWithAllMembers[0].auditoriumId);
             StudentEvent studentEvent=new StudentEvent(student.getId(),event.getId());
             applicationUserDao.insert(teacher);
+            if(applicationUserDao.getById(student.getId())==null)
             applicationUserDao.insert(student);
             auditoriumDao.insert(auditorium);
             lessonDao.insert(lesson);

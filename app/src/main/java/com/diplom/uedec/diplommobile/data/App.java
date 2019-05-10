@@ -29,6 +29,7 @@ public class App extends Application {
     }
 
     public static App instance;
+    public static String cookies;
     public static ApplicationUser user;
     private AppDatabase database;
 

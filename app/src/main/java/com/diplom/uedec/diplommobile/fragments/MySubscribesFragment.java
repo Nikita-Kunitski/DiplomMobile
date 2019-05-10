@@ -1,14 +1,19 @@
 package com.diplom.uedec.diplommobile.fragments;
 
 import android.arch.persistence.room.Embedded;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.diplom.uedec.diplommobile.DetailEventActivity;
+import com.diplom.uedec.diplommobile.DetailSubscribeAndDeleteActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
 import com.diplom.uedec.diplommobile.data.App;
@@ -40,7 +45,11 @@ public class MySubscribesFragment extends Fragment implements DataAdapter.onEven
 
     @Override
     public void onEventClick(int position) {
-
+        Log.i("test",String.valueOf(position));
+        Intent intent=new Intent(getActivity(), DetailSubscribeAndDeleteActivity.class);
+        EventWithAllMembers item=m_eventWithAllMembers.get(position);
+        intent.putExtra("EventWithAllMembers",item);
+        startActivity(intent);
     }
 
     class getMySubscribes extends AsyncTask<Void,Void,List<EventWithAllMembers>>
@@ -48,6 +57,11 @@ public class MySubscribesFragment extends Fragment implements DataAdapter.onEven
         @Override
         protected void onPostExecute(List<EventWithAllMembers> eventWithAllMembers) {
             m_eventWithAllMembers=eventWithAllMembers;
+            if(m_eventWithAllMembers.size()==0)
+            {
+                recyclerView.setVisibility(RecyclerView.INVISIBLE);
+                message.setVisibility(TextView.VISIBLE);
+            }
             SetAdapter(m_eventWithAllMembers);
         }
 
@@ -101,6 +115,7 @@ public class MySubscribesFragment extends Fragment implements DataAdapter.onEven
         recyclerView.setAdapter(adapter);
     }
 
+    TextView message;
     List<EventWithAllMembers> m_eventWithAllMembers;
     RecyclerView recyclerView;
     @Override
@@ -109,6 +124,7 @@ public class MySubscribesFragment extends Fragment implements DataAdapter.onEven
     {
         View view = inflater.inflate(R.layout.mysubscribes_fragment, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.mySubscribesList);
+        message = view.findViewById(R.id.message_);
         new getMySubscribes().execute();
 
         return view;
