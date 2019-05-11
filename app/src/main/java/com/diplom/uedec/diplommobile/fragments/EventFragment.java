@@ -12,11 +12,14 @@ import android.view.ViewGroup;
 import com.diplom.uedec.diplommobile.DetailEventActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
+import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +55,17 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
                               Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.events_fragment, container, false);
-        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.MINUTES)
+                .readTimeout(30,TimeUnit.MINUTES)
+                .build();
+
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.BASE_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEvents();
         recyclerView = (RecyclerView)view.findViewById(R.id.list);

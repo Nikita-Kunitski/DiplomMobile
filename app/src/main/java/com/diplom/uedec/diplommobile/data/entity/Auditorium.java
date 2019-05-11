@@ -38,6 +38,19 @@ public class Auditorium implements Parcelable {
     //@ColumnInfo(name = "auditoriumtype_id")
     private int AuditoriumTypeId;
 
+    @SerializedName("AuditoriumType")
+    @Expose
+    @Ignore
+    private  AuditoriumType AuditoriumType;
+
+    public AuditoriumType getAuditoriumType() {
+        return AuditoriumType;
+    }
+
+    public void setAuditoriumType(AuditoriumType auditoriumType) {
+        AuditoriumType = auditoriumType;
+    }
+
     public Auditorium() {
     }
 

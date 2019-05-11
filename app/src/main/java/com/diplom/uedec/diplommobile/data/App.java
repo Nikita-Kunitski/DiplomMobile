@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 
+import okhttp3.Headers;
+
 
 /**
  * Created by uedec on 05.05.2019.
@@ -27,9 +29,10 @@ public class App extends Application {
 
         }
     }
-
+//TODO переработать принцип сохранения данных SHARED PREFERENCES
     public static App instance;
-    public static String cookies;
+    public static String role;
+    public static String token;
     public static ApplicationUser user;
     private AppDatabase database;
 

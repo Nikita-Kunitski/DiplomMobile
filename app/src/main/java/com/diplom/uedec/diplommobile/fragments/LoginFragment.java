@@ -43,15 +43,19 @@ public class LoginFragment extends Fragment {
 
     public void authentication(String email,String password){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
+                .connectTimeout(30, TimeUnit.MINUTES)
+                .readTimeout(30,TimeUnit.MINUTES)
                 .build();
+
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).
-                build();
+                client(okHttpClient)
+                .build();
         REST REST =retrofit.create(REST.class);
         Call<ApplicationUser> call = REST.Auth(email,password);
         call.enqueue(new Callback<ApplicationUser>() {
             @Override
             public void onResponse(Call<ApplicationUser> call, Response<ApplicationUser> response) {
+
                 Log.i("responce-message",response.raw().message());
                 Log.i("responce-headers",response.headers().toString());
                 Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
@@ -61,7 +65,7 @@ public class LoginFragment extends Fragment {
                 register.setEnabled(true);
                 if(response.raw().message().equals("OK")){
                     App.user=response.body();
-                    App.cookies=response.headers().get("Set-Cookie");
+                    App.role=response.headers().get("Role");
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
                 }
