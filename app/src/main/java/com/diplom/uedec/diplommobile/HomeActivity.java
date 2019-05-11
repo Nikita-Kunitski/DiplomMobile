@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 case R.id.home_teacher:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserFragment()).commit();
-                    //TODO изменить выхов фрагмента
+                    //TODO изменить выхов фрагментаs
                     return true;
                 case R.id.navigation_dashboard:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new MySubscribesFragment()).commit();

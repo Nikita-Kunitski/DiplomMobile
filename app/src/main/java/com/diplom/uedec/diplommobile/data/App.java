@@ -29,7 +29,7 @@ public class App extends Application {
 
         }
     }
-//TODO переработать принцип сохранения данных SHARED PREFERENCES
+//TODO переработать принцип сохранения данных SHARED PREFERENCEs
     public static App instance;
     public static String role;
     public static String token;
