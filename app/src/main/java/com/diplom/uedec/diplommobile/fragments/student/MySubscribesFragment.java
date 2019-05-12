@@ -1,4 +1,4 @@
-package com.diplom.uedec.diplommobile.fragments;
+package com.diplom.uedec.diplommobile.fragments.student;
 
 import android.arch.persistence.room.Embedded;
 import android.content.Intent;

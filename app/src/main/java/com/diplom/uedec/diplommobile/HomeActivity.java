@@ -12,12 +12,10 @@ import android.widget.TextView;
 import com.diplom.uedec.diplommobile.async.GetTeacherData;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.TeacherData;
-import com.diplom.uedec.diplommobile.fragments.DetailUserStudentFragment;
-import com.diplom.uedec.diplommobile.fragments.EventsStudentFragment;
-import com.diplom.uedec.diplommobile.fragments.EventsTeacherFragment;
-import com.diplom.uedec.diplommobile.fragments.LoginFragment;
-import com.diplom.uedec.diplommobile.fragments.MySubscribesFragment;
-import com.diplom.uedec.diplommobile.fragments.RegisterFragment;
+import com.diplom.uedec.diplommobile.fragments.student.DetailUserStudentFragment;
+import com.diplom.uedec.diplommobile.fragments.student.EventsStudentFragment;
+import com.diplom.uedec.diplommobile.fragments.teacher.EventsTeacherFragment;
+import com.diplom.uedec.diplommobile.fragments.student.MySubscribesFragment;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.concurrent.TimeUnit;

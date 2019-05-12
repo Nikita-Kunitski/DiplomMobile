@@ -1,4 +1,4 @@
-package com.diplom.uedec.diplommobile.fragments;
+package com.diplom.uedec.diplommobile.fragments.student;
 
 import android.content.Intent;
 import android.os.Bundle;
