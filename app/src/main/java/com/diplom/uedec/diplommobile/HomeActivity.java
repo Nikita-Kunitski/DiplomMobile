@@ -9,11 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.diplom.uedec.diplommobile.data.App;
-import com.diplom.uedec.diplommobile.fragments.DetailUserFragment;
+import com.diplom.uedec.diplommobile.fragments.DetailUserStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.EventFragment;
 import com.diplom.uedec.diplommobile.fragments.MySubscribesFragment;
-import com.diplom.uedec.diplommobile.fragments.RegisterFragment;
-import com.diplom.uedec.diplommobile.fragments.ReminderFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new EventFragment()).commit();
                     return true;
                 case R.id.home_teacher:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserStudentFragment()).commit();
                     //TODO изменить выхов фрагментаs
                     return true;
                 case R.id.navigation_dashboard:
@@ -39,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
                     //getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new ReminderFragment()).commit();
                     return true;
                 case R.id.detail_user:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserStudentFragment()).commit();
                     return true;
             }
             return false;
