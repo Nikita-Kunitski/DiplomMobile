@@ -1,20 +1,16 @@
 package com.diplom.uedec.diplommobile.retrofit;
 
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
-import com.diplom.uedec.diplommobile.data.entity.Event;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
-import com.diplom.uedec.diplommobile.fragments.EventFragment;
+import com.diplom.uedec.diplommobile.data.entity.TeacherData;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -27,6 +23,12 @@ public interface REST {
 
     @GET("api/events")
     Call<List<EventWithAllMembers>> getAllEvents();
+
+    @GET("api/events/teachers")
+    Call<List<EventWithAllMembers>> getAllEventsTeacher(@Query("id") String id);
+
+    @GET("api/data")
+    Call<TeacherData> getTeacherData(@Query("id")String id);
 
     @POST("api/events/subscribe")
     Call<Void> Subscribe(@Body StudentEvent studentEvent);

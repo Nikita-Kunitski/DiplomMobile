@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home_student"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home_student" />
-
-    <item
         android:id="@+id/home_teacher"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home_teacher" />
+
+    <item
+        android:id="@+id/home_student"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home_student" />
 
     <item
         android:id="@+id/navigation_dashboard"

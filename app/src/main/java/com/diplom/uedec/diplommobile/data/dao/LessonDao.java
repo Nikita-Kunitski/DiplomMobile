@@ -10,9 +10,6 @@ import com.diplom.uedec.diplommobile.data.entity.Lesson;
 
 import java.util.List;
 
-/**
- * Created by uedec on 04.05.2019.
- */
 
 @Dao
 public interface LessonDao {
@@ -30,4 +27,7 @@ public interface LessonDao {
 
     @Delete
     void delete(Lesson lesson);
+
+    @Query("Delete From lesson")
+    void deleteAll();
 }

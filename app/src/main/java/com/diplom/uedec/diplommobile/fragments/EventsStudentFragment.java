@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.diplom.uedec.diplommobile.DetailEventActivity;
+import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
 import com.diplom.uedec.diplommobile.data.App;
@@ -30,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by uedec on 08.05.2019.
  */
 
-public class EventFragment extends Fragment implements DataAdapter.onEventListner {
+public class EventsStudentFragment extends Fragment implements DataAdapter.onEventListner {
 
 
     @Override
@@ -54,10 +55,11 @@ public class EventFragment extends Fragment implements DataAdapter.onEventListne
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.events_fragment, container, false);
+        View view = inflater.inflate(R.layout.events_student_fragment, container, false);
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.MINUTES)
-                .readTimeout(30,TimeUnit.MINUTES)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit=new Retrofit.Builder()

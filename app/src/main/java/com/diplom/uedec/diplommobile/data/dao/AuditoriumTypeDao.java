@@ -10,9 +10,6 @@ import com.diplom.uedec.diplommobile.data.entity.AuditoriumType;
 
 import java.util.List;
 
-/**
- * Created by uedec on 04.05.2019.
- */
 
 @Dao
 public interface AuditoriumTypeDao {
@@ -30,4 +27,7 @@ public interface AuditoriumTypeDao {
 
     @Delete
     void delete(AuditoriumType auditoriumType);
+
+    @Query("Delete From auditoriumtype")
+    void deleteAll();
 }

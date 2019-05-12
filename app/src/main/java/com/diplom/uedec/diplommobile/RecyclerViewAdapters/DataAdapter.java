@@ -10,15 +10,12 @@ import android.widget.TextView;
 
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
-import com.diplom.uedec.diplommobile.fragments.EventFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-/**
- * Created by uedec on 09.05.2019.
- */
+
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private LayoutInflater inflater;

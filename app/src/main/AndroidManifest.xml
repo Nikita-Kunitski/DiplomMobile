@@ -32,7 +32,8 @@
         <activity
             android:name=".DetailSubscribeAndDeleteActivity"
             android:label="@string/title_activity_detail_subscribe_and_delete"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreateEventActivity"/>
     </application>
 
 </manifest>

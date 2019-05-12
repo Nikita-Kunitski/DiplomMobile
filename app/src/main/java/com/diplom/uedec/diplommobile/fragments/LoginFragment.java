@@ -43,8 +43,8 @@ public class LoginFragment extends Fragment {
 
     public void authentication(String email,String password){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.MINUTES)
-                .readTimeout(30,TimeUnit.MINUTES)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).
@@ -55,7 +55,6 @@ public class LoginFragment extends Fragment {
         call.enqueue(new Callback<ApplicationUser>() {
             @Override
             public void onResponse(Call<ApplicationUser> call, Response<ApplicationUser> response) {
-
                 Log.i("responce-message",response.raw().message());
                 Log.i("responce-headers",response.headers().toString());
                 Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
