@@ -23,6 +23,7 @@
             android:id="@+id/eventDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:hint="Дата" />
     </android.support.design.widget.TextInputLayout>
 
@@ -41,6 +42,7 @@
             android:id="@+id/eventStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:hint="Начало" />
     </android.support.design.widget.TextInputLayout>
 
@@ -59,6 +61,7 @@
             android:id="@+id/eventEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:hint="Окончание" />
     </android.support.design.widget.TextInputLayout>
 
@@ -77,6 +80,7 @@
             android:id="@+id/countPeople"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="Количество человек" />
     </android.support.design.widget.TextInputLayout>
 
@@ -92,8 +96,10 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout10">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/lesson"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:focusable="false"
             android:hint="Предмет" />
     </android.support.design.widget.TextInputLayout>
 
@@ -109,13 +115,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout11">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/auditorium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:hint="Аудитория" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/create"
         android:layout_width="186dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -123,6 +131,19 @@
         android:text="Создать"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout12" />
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

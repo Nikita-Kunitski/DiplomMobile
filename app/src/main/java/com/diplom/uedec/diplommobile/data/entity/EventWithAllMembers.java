@@ -81,6 +81,19 @@ public class EventWithAllMembers implements Parcelable {
         this.lesson = lesson;
     }
 
+    public EventWithAllMembers( Date date, Date startTime, Date endTime, int countPeople, int lessonId, String eventName, int auditoriumId, String teacheId, Auditorium auditorium, ApplicationUser teacher, Lesson lesson) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.countPeople = countPeople;
+        this.lessonId = lessonId;
+        this.eventName = eventName;
+        this.auditoriumId = auditoriumId;
+        this.teacheId = teacheId;
+        this.auditorium = auditorium;
+        this.teacher = teacher;
+        this.lesson = lesson;
+    }
     protected EventWithAllMembers(Parcel in) {
         id = in.readInt();
         long tmpDate = in.readLong();

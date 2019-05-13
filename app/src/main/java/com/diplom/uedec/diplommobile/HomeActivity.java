@@ -88,35 +88,7 @@ public class HomeActivity extends AppCompatActivity {
                     .add(R.id.home_container, new EventsTeacherFragment())
                     .commit();
 
-            OkHttpClient client1 = new OkHttpClient.Builder()
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(30,TimeUnit.SECONDS)
-                    .build();
 
-            Retrofit retrofit1=new Retrofit.Builder()
-                    .baseUrl(getResources().getString(R.string.BASE_URL))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client1)
-                    .build();
-            REST rest=retrofit1.create(REST.class);
-
-            Call<TeacherData> call2=rest.getTeacherData(App.user.getId());
-            call2.enqueue(new Callback<TeacherData>() {
-                @Override
-                public void onResponse(Call<TeacherData> call, Response<TeacherData> response) {
-                    Log.i("responce-message",response.raw().message());
-                    Log.i("responce-headers",response.headers().toString());
-                    Log.i("responce-Set-Cookie",response.headers().get("Set-Cookie")==null ? "null":response.headers().get("Set-Cookie"));
-                    Log.i("responce-headers",response.raw().message().equals("Bad Request")? "lox" : "success");
-                    TeacherData list=response.body();
-                    new GetTeacherData().execute(list);
-                }
-
-                @Override
-                public void onFailure(Call<TeacherData> call, Throwable t) {
-                    Log.i("responce-headers",t.getMessage());
-                }
-            });
         }
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
