@@ -32,4 +32,5 @@
     <string name="title_activity_detail_event">DetailEventActivity</string>
     <string name="title_activity_detail_subscribe_and_delete">DetailSubscribeAndDeleteActivity
     </string>
+    <string name="title_activity_teacher_home">TeacherHomeActivity</string>
 </resources>

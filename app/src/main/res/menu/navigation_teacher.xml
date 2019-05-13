@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_teacher"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home_teacher" />
+
+    <item
+        android:id="@+id/detail_teacher"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/title_detail" />
+</menu>

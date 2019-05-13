@@ -34,7 +34,10 @@
             android:label="@string/title_activity_detail_subscribe_and_delete"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CreateEventActivity" />
-        <activity android:name=".UpdateOrDeleteActivity"></activity>
+        <activity android:name=".UpdateOrDeleteActivity" />
+        <activity
+            android:name=".TeacherHomeActivity"
+            android:label="@string/title_activity_teacher_home"></activity>
     </application>
 
 </manifest>

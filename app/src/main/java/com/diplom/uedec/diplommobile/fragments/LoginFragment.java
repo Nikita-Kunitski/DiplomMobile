@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.MainActivity;
 import com.diplom.uedec.diplommobile.R;
+import com.diplom.uedec.diplommobile.TeacherHomeActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.retrofit.REST;
@@ -65,8 +66,16 @@ public class LoginFragment extends Fragment {
                 if(response.raw().message().equals("OK")){
                     App.user=response.body();
                     App.role=response.headers().get("Role");
+                    if(App.role.equals("student"))
+                    {
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     startActivity(intent);
+                    }
+                    if(App.role.equals("teacher"))
+                    {
+                        Intent intent = new Intent(getActivity(), TeacherHomeActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
 
