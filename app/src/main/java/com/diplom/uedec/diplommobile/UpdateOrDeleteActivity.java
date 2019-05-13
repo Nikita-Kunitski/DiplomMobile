@@ -313,5 +313,28 @@ public class UpdateOrDeleteActivity extends AppCompatActivity {
 
             }
         });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<Void> call=rest.Delete(eventWithAllMembers);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.code()==200)
+                        {
+                            Toast.makeText(UpdateOrDeleteActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(UpdateOrDeleteActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
     }
 }

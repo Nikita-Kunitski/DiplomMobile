@@ -41,4 +41,7 @@ public interface REST {
 
     @POST("api/events/update")
     Call<Void> Update(@Body EventWithAllMembers eventWithAllMembers);
+
+    @POST("api/events/delete")
+    Call<Void> Delete(@Body EventWithAllMembers eventWithAllMembers);
 }
