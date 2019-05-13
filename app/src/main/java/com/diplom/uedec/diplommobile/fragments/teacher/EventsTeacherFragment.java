@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.diplom.uedec.diplommobile.CreateEventActivity;
 import com.diplom.uedec.diplommobile.R;
-import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
+import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataEventsAdapter;
 import com.diplom.uedec.diplommobile.UpdateOrDeleteActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class EventsTeacherFragment extends Fragment implements DataAdapter.onEventListner {
+public class EventsTeacherFragment extends Fragment implements DataEventsAdapter.onEventListner {
 
     @Override
     public void onEventClick(int position) {
@@ -42,7 +42,7 @@ public class EventsTeacherFragment extends Fragment implements DataAdapter.onEve
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {
-        DataAdapter adapter = new DataAdapter(getContext(), mresult, this);
+        DataEventsAdapter adapter = new DataEventsAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
     }
     FloatingActionButton fab;

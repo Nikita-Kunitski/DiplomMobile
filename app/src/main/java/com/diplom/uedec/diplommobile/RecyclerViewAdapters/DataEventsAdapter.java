@@ -17,27 +17,27 @@ import java.util.List;
 
 
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class DataEventsAdapter extends RecyclerView.Adapter<DataEventsAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private List<EventWithAllMembers> _eventWithAllMembersList;
 
     private onEventListner monEventListner;
 
-    public DataAdapter(Context context, List<EventWithAllMembers> eventWithAllMembersList, onEventListner onEventListner) {
+    public DataEventsAdapter(Context context, List<EventWithAllMembers> eventWithAllMembersList, onEventListner onEventListner) {
         this._eventWithAllMembersList = eventWithAllMembersList;
         this.inflater = LayoutInflater.from(context);
         this.monEventListner=onEventListner;
     }
 
     @Override
-    public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DataEventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.list_item, parent, false);
+        View view = inflater.inflate(R.layout.list_events_item, parent, false);
         return new ViewHolder(view,monEventListner);
     }
 
     @Override
-    public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(DataEventsAdapter.ViewHolder holder, int position) {
         EventWithAllMembers eventWithAllMembers = _eventWithAllMembersList.get(position);
         holder.eventName.setText(eventWithAllMembers.eventName);
         holder.auditorium.setText("Аудитория: "+eventWithAllMembers.auditorium.getAuditoriumName());

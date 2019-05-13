@@ -10,11 +10,12 @@ import android.widget.TextView;
 import com.diplom.uedec.diplommobile.fragments.student.EventsStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.DetailUserTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.EventsTeacherFragment;
+import com.diplom.uedec.diplommobile.fragments.teacher.TeacherLessonFragment;
 
 public class TeacherHomeActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-
+    BottomNavigationView navigation;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -23,12 +24,16 @@ public class TeacherHomeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home_teacher:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new EventsTeacherFragment()).commit();
+
                     //TODO изменить выхов фрагментаs
                     return true;
                 case R.id.detail_teacher:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserTeacherFragment()).commit();
                     return true;
 
+                case R.id.teacher_lesson:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new TeacherLessonFragment()).commit();
+                    return true;
             }
             return false;
         }
@@ -40,7 +45,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_home);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.home_teacher);
         getSupportFragmentManager().beginTransaction()

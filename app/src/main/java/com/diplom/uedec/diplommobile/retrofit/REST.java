@@ -2,6 +2,7 @@ package com.diplom.uedec.diplommobile.retrofit;
 
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
+import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
 import com.diplom.uedec.diplommobile.data.entity.TeacherData;
 
@@ -44,4 +45,7 @@ public interface REST {
 
     @POST("api/events/delete")
     Call<Void> Delete(@Body EventWithAllMembers eventWithAllMembers);
+
+    @GET("api/lessons/mylessons")
+    Call<List<Lesson>> getLessons(@Query("id")String id);
 }

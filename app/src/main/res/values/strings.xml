@@ -25,6 +25,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_home_student">Занятия</string>
     <string name="title_home_teacher">Занятия</string>
+    <string name="title_teacher_lesson">Предметы</string>
     <string name="title_dashboard">Мои занятия</string>
     <string name="title_notifications">Напоминания</string>
     <string name="title_detail">Моя страница</string>

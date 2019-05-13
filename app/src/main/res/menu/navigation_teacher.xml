@@ -7,6 +7,11 @@
         android:title="@string/title_home_teacher" />
 
     <item
+        android:id="@+id/teacher_lesson"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="@string/title_teacher_lesson" />
+
+    <item
         android:id="@+id/detail_teacher"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/title_detail" />

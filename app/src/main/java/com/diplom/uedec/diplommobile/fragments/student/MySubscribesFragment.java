@@ -1,6 +1,5 @@
 package com.diplom.uedec.diplommobile.fragments.student;
 
-import android.arch.persistence.room.Embedded;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.diplom.uedec.diplommobile.DetailEventActivity;
 import com.diplom.uedec.diplommobile.DetailSubscribeAndDeleteActivity;
 import com.diplom.uedec.diplommobile.R;
-import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
+import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataEventsAdapter;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.AppDatabase;
 import com.diplom.uedec.diplommobile.data.dao.ApplicationUserDao;
@@ -41,7 +39,7 @@ import java.util.List;
  * Created by uedec on 08.05.2019.
  */
 
-public class MySubscribesFragment extends Fragment implements DataAdapter.onEventListner {
+public class MySubscribesFragment extends Fragment implements DataEventsAdapter.onEventListner {
 
     @Override
     public void onEventClick(int position) {
@@ -111,7 +109,7 @@ public class MySubscribesFragment extends Fragment implements DataAdapter.onEven
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {
-        DataAdapter adapter = new DataAdapter(getContext(), mresult, this);
+        DataEventsAdapter adapter = new DataEventsAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
     }
 

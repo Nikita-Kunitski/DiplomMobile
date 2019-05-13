@@ -300,7 +300,7 @@ public class UpdateOrDeleteActivity extends AppCompatActivity {
                         if(response.code()==200)
                         {
                             Toast.makeText(UpdateOrDeleteActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(UpdateOrDeleteActivity.this, HomeActivity.class);
+                            Intent intent=new Intent(UpdateOrDeleteActivity.this, TeacherHomeActivity.class);
                             startActivity(intent);
                         }
                     }
