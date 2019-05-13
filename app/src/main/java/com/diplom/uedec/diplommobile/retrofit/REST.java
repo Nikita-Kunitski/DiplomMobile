@@ -38,4 +38,7 @@ public interface REST {
 
     @POST("api/events/create")
     Call<EventWithAllMembers> Create(@Body EventWithAllMembers eventWithAllMembers);
+
+    @POST("api/events/update")
+    Call<Void> Update(@Body EventWithAllMembers eventWithAllMembers);
 }

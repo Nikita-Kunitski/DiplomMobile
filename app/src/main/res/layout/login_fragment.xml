@@ -48,6 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Log In"
+        android:backgroundTint="@android:color/holo_green_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
@@ -58,6 +59,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:text="Register"
+        android:backgroundTint="@android:color/holo_red_light"
         app:layout_constraintStart_toEndOf="@+id/log_in"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 

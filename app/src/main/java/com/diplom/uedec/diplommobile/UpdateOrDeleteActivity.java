@@ -5,8 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.drm.DrmStore;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -43,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.text.InputType.TYPE_NULL;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class UpdateOrDeleteActivity extends AppCompatActivity {
 
     public void ChangeValueEditors(boolean flag)
     {
@@ -59,22 +56,39 @@ public class CreateEventActivity extends AppCompatActivity {
     ProgressBar progressBar;
     EditText date, startTime, endTime,lesson, auditorium, countPeople;
     TeacherData teacherData;
-    Button create;
+    Button update, delete;
     int auditoriumId, lessonId;
+    EventWithAllMembers eventWithAllMembers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Создание нового занятия");
-        setContentView(R.layout.activity_create_event);
+        setTitle("Редактирование занятия");
+        setContentView(R.layout.activity_update_or_delete);
 
+        final DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        final DateFormat df2=new SimpleDateFormat("HH:mm:ss");
+        final DateFormat df3=new SimpleDateFormat("HH:mm");
+        final DateFormat df4=new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
+        eventWithAllMembers = getIntent().getParcelableExtra("EventWithAllMembers");
         date=findViewById(R.id.eventDate);
         startTime = findViewById(R.id.eventStartTime);
         endTime=findViewById(R.id. eventEndTime);
         lesson=findViewById(R.id.lesson);
         auditorium=findViewById(R.id.auditorium);
         progressBar =findViewById(R.id.progressBar3);
-        create=findViewById(R.id.create);
         countPeople=findViewById(R.id.countPeople);
+
+        date.setText(df.format(eventWithAllMembers.date));
+        startTime.setText(df3.format(eventWithAllMembers.startTime));
+        endTime.setText(df3.format(eventWithAllMembers.endTime));
+        lesson.setText(eventWithAllMembers.lesson.getAbbreviation());
+        auditorium.setText(eventWithAllMembers.auditorium.getAuditoriumName());
+        countPeople.setText(String.valueOf(eventWithAllMembers.countPeople));
+
+        update=findViewById(R.id.update);
+        delete=findViewById(R.id.delete);
+
 
         OkHttpClient client1 = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -110,9 +124,6 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
-        final DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-        final DateFormat df2=new SimpleDateFormat("HH:mm:ss");
-
         date.setInputType(TYPE_NULL);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +132,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
-                picker = new DatePickerDialog(CreateEventActivity.this, new DatePickerDialog.OnDateSetListener() {
+                picker = new DatePickerDialog(UpdateOrDeleteActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         date.setText(i+"-"+(i1+1)+"-"+i2);
@@ -138,7 +149,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 int hour = cldr.get(Calendar.HOUR_OF_DAY);
                 int minute = cldr.get(Calendar.MINUTE);
                 int second = cldr.get(Calendar.SECOND);
-                start=new TimePickerDialog(CreateEventActivity.this,
+                start=new TimePickerDialog(UpdateOrDeleteActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
@@ -156,7 +167,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 int hour = cldr.get(Calendar.HOUR_OF_DAY);
                 int minute = cldr.get(Calendar.MINUTE);
                 int second = cldr.get(Calendar.SECOND);
-                end=new TimePickerDialog(CreateEventActivity.this,
+                end=new TimePickerDialog(UpdateOrDeleteActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
@@ -170,10 +181,10 @@ public class CreateEventActivity extends AppCompatActivity {
         lesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(CreateEventActivity.this);
+                AlertDialog.Builder builder=new AlertDialog.Builder(UpdateOrDeleteActivity.this);
                 final ArrayList<String> lessonString=new ArrayList<>();
                 for (Lesson item:teacherData.lessons
-                     ) {
+                        ) {
                     lessonString.add(item.getAbbreviation());
                 }
                 final String [] arr = new String[teacherData.lessons.size()];
@@ -206,7 +217,7 @@ public class CreateEventActivity extends AppCompatActivity {
         auditorium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(CreateEventActivity.this);
+                AlertDialog.Builder builder=new AlertDialog.Builder(UpdateOrDeleteActivity.this);
                 final ArrayList<String> auditoriumString=new ArrayList<>();
                 for (Auditorium item:teacherData.auditoriums
                         ) {
@@ -238,7 +249,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
-        create.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Auditorium auditorium=teacherData.auditoriums.get(auditoriumId);
@@ -246,45 +257,61 @@ public class CreateEventActivity extends AppCompatActivity {
                 Date Date=new Date(), StartTime=new Date(), EndTime=new Date();
                 try {
                     Date=df.parse(date.getText().toString());
-                    StartTime=df2.parse(startTime.getText().toString()+":00");
-                    EndTime=df2.parse(endTime.getText().toString()+":00");
+                    StartTime=df4.parse(date.getText().toString()+":"+ startTime.getText().toString()+":00");
+                    EndTime=df4.parse(date.getText().toString()+":"+ endTime.getText().toString()+":00");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                EventWithAllMembers eventWithAllMembers=new EventWithAllMembers(Date,
-                                                                                StartTime,
-                                                                                EndTime,
-                                                                                Integer.parseInt(countPeople.getText().toString()),
-                                                                                lesson.getId(),
-                                                                                lesson.getName()+" "+App.user.getEmail(),
-                                                                                auditorium.getId(),
-                                                                                App.user.getId(),
-                                                                                auditorium,
-                                                                                App.user,
-                                                                                lesson);
-                Call<EventWithAllMembers> call=rest.Create(eventWithAllMembers);
-                call.enqueue(new Callback<EventWithAllMembers>() {
+                EventWithAllMembers update=new EventWithAllMembers(eventWithAllMembers.id,
+                                                                    eventWithAllMembers.date,
+                                                                    eventWithAllMembers.startTime,
+                                                                    eventWithAllMembers.endTime,
+                                                                    eventWithAllMembers.countPeople,
+                                                                    eventWithAllMembers.lessonId,
+                                                                    eventWithAllMembers.eventName,
+                                                                    eventWithAllMembers.auditoriumId,
+                                                                    eventWithAllMembers.teacheId,
+                                                                    eventWithAllMembers.auditorium,
+                                                                    eventWithAllMembers.teacher,
+                                                                    eventWithAllMembers.lesson);
+                if(update.auditoriumId!=auditorium.getId())
+                {
+                    update.auditoriumId = auditorium.getId();
+                    update.auditorium = auditorium;
+                }
+                if(update.lessonId!=lesson.getId())
+                {
+                    update.lessonId=lesson.getId();
+                    update.lesson=lesson;
+                }
+                update.countPeople=Integer.parseInt(countPeople.getText().toString());
+                update.date=Date;
+                update.startTime=StartTime;
+                update.endTime=EndTime;
+                if(update.equals(eventWithAllMembers)) {
+                    Toast.makeText(UpdateOrDeleteActivity.this, "Вы ничего не изменили", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Call<Void> call=rest.Update(update);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<EventWithAllMembers> call, Response<EventWithAllMembers> response) {
-                        Log.i("responce-message",response.code()+" "+response.raw().message());
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.code()==200)
                         {
-
-                            EventWithAllMembers eventWithAllMembers1=response.body();
-                            Toast.makeText(CreateEventActivity.this,"Удача",Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(CreateEventActivity.this,HomeActivity.class);
+                            Toast.makeText(UpdateOrDeleteActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(UpdateOrDeleteActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<EventWithAllMembers> call, Throwable t) {
-                        Log.i("responce-failure",t.getMessage());
+                    public void onFailure(Call<Void> call, Throwable t) {
+
                     }
                 });
+
             }
         });
-
-
     }
 }

@@ -145,4 +145,17 @@ public class EventWithAllMembers implements Parcelable {
             return new EventWithAllMembers[size];
         }
     };
+
+    public boolean equals(EventWithAllMembers obj) {
+        if((this.auditoriumId==obj.auditoriumId)&&
+                (this.lessonId==obj.lessonId)&&
+                (this.teacheId==obj.teacheId)&&
+                (this.date.compareTo(obj.date)==0)&&
+                (this.startTime.compareTo(obj.startTime)==0)&&
+                (this.endTime.compareTo(obj.endTime)==0)
+                )
+            return true;
+        return false;
+    }
+
 }

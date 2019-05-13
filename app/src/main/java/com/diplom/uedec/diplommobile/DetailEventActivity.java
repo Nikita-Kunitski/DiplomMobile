@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -84,6 +85,7 @@ public class DetailEventActivity extends AppCompatActivity {
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         DateFormat df2=new SimpleDateFormat("HH:mm");
         eventName.setText(eventWithAllMembers.eventName);
+
         dateAndTime.setText(df.format(eventWithAllMembers.date)+"\n"+df2.format(eventWithAllMembers.startTime)+" - "+df2.format(eventWithAllMembers.endTime));
         auditorium.setText(eventWithAllMembers.auditorium.getAuditoriumName());
         lesson.setText(eventWithAllMembers.lesson.getName());

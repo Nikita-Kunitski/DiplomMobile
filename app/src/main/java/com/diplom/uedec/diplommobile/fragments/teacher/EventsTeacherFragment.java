@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import com.diplom.uedec.diplommobile.CreateEventActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataAdapter;
-import com.diplom.uedec.diplommobile.async.GetTeacherData;
+import com.diplom.uedec.diplommobile.UpdateOrDeleteActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
-import com.diplom.uedec.diplommobile.data.entity.TeacherData;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.List;
@@ -30,15 +29,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by uedec on 12.05.2019.
- */
 
 public class EventsTeacherFragment extends Fragment implements DataAdapter.onEventListner {
 
     @Override
     public void onEventClick(int position) {
-
+        Intent intent=new Intent(getActivity(), UpdateOrDeleteActivity.class);
+        EventWithAllMembers item = result.get(position);
+        intent.putExtra("EventWithAllMembers",item);
+        startActivity(intent);
     }
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
