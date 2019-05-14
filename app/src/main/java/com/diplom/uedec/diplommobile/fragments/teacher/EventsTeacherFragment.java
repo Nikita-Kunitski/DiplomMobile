@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.diplom.uedec.diplommobile.CreateEventActivity;
 import com.diplom.uedec.diplommobile.R;
@@ -17,6 +18,7 @@ import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataEventsAdapter;
 import com.diplom.uedec.diplommobile.UpdateOrDeleteActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
+import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.List;
@@ -44,10 +46,12 @@ public class EventsTeacherFragment extends Fragment implements DataEventsAdapter
     {
         DataEventsAdapter adapter = new DataEventsAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
     }
     FloatingActionButton fab;
     List<EventWithAllMembers> result;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class EventsTeacherFragment extends Fragment implements DataEventsAdapter
 
         fab  = (FloatingActionButton) view.findViewById(R.id.fab);
 
+        progressBar=view.findViewById(R.id.progressBar5);
+
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.BASE_URL))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -69,6 +75,7 @@ public class EventsTeacherFragment extends Fragment implements DataEventsAdapter
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEventsTeacher(App.user.getId());
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
             @Override
             public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {

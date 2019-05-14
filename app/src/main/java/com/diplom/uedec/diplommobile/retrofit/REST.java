@@ -5,6 +5,7 @@ import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
 import com.diplom.uedec.diplommobile.data.entity.TeacherData;
+import com.diplom.uedec.diplommobile.data.entity.TeacherLesson;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface REST {
 
     @GET("api/lessons/mylessons")
     Call<List<Lesson>> getLessons(@Query("id")String id);
+
+    @GET("api/lessons")
+    Call<List<Lesson>> getAllLessons(@Query("id")String id);
+
+    @POST("api/lessons/subscribe")
+    Call<Void> SubscribeToLesson(@Body TeacherLesson teacherLesson);
+
 }

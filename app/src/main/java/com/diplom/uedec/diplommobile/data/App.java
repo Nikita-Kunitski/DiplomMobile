@@ -6,6 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.os.AsyncTask;
 
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
+import com.diplom.uedec.diplommobile.data.entity.Lesson;
+
+import java.util.List;
 
 import okhttp3.Headers;
 
@@ -34,6 +37,7 @@ public class App extends Application {
     public static String role;
     public static String token;
     public static ApplicationUser user;
+    public static List<Lesson> lessons;
     private AppDatabase database;
 
     @Override

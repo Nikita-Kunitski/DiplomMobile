@@ -4,18 +4,31 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 
 import com.diplom.uedec.diplommobile.data.App;
+import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.fragments.LoginFragment;
 import com.diplom.uedec.diplommobile.fragments.student.DetailUserStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.student.EventsStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.DetailUserTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.EventsTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.student.MySubscribesFragment;
+import com.diplom.uedec.diplommobile.retrofit.REST;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -61,9 +74,9 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
             navigation.setSelectedItemId(R.id.home_student);
-        getSupportFragmentManager().beginTransaction()
+       /* getSupportFragmentManager().beginTransaction()
                 .add(R.id.home_container, new EventsStudentFragment())
-                .commit();
+                .commit();*/
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
