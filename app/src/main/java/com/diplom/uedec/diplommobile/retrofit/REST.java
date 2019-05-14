@@ -56,4 +56,7 @@ public interface REST {
     @POST("api/lessons/subscribe")
     Call<Void> SubscribeToLesson(@Body TeacherLesson teacherLesson);
 
+    @POST("api/teacher/lesson/delete")
+    Call<Void> Unsubscribe(@Body TeacherLesson teacherLesson);
+
 }

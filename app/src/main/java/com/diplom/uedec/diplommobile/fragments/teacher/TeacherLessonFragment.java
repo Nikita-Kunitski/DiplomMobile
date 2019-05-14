@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.diplom.uedec.diplommobile.CreateEventActivity;
+import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataEventsAdapter;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataLessonsAdapter;
@@ -41,9 +42,56 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TeacherLessonFragment extends Fragment implements DataLessonsAdapter.onEventListner {
 
-    @Override
-    public void onEventClick(int position) {
 
+    @Override
+    public void onEventClick(final int position) {
+        AlertDialog.Builder ad;
+        ad = new AlertDialog.Builder(getActivity());
+        ad.setTitle("Удаление");
+        ad.setMessage("Вы действительно хотите удалить этот предмет из своего списка?");
+        ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .readTimeout(30,TimeUnit.SECONDS)
+                        .build();
+
+                Retrofit retrofit=new Retrofit.Builder()
+                        .baseUrl(getResources().getString(R.string.BASE_URL))
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(client)
+                        .build();
+
+                final REST REST =retrofit.create(REST.class);
+                TeacherLesson teacherLesson=new TeacherLesson(App.user.getId(),result.get(position).getId());
+                Call<Void> call=REST.Unsubscribe(teacherLesson);
+                progressBar.setVisibility(View.VISIBLE);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.code()==200)
+                        {
+                            Toast.makeText(getActivity(), "Удаление выполнено успешно", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+        ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        ad.show();
     }
 
     public void SetAdapter(List<Lesson> mresult)
@@ -175,4 +223,6 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
         });
         return view;
     }
+
+
 }

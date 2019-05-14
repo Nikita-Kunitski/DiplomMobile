@@ -46,7 +46,7 @@ public class DataLessonsAdapter extends RecyclerView.Adapter<DataLessonsAdapter.
         return _lessons.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView lessonName, abbreviation;
         onEventListner _onEventListner;
 
@@ -55,13 +55,15 @@ public class DataLessonsAdapter extends RecyclerView.Adapter<DataLessonsAdapter.
             lessonName = (TextView) view.findViewById(R.id.lessonName);
             abbreviation = (TextView) view.findViewById(R.id.abbreviation);
             this._onEventListner=onEventListner;
-            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
-        public void onClick(View view) {
+        public boolean onLongClick(View view) {
             _onEventListner.onEventClick(getAdapterPosition());
+            return true;
         }
+
     }
 
     public interface onEventListner {

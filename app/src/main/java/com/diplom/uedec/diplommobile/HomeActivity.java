@@ -18,6 +18,7 @@ import com.diplom.uedec.diplommobile.fragments.student.EventsStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.DetailUserTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.EventsTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.student.MySubscribesFragment;
+import com.diplom.uedec.diplommobile.fragments.teacher.TeacherLessonFragment;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class HomeActivity extends AppCompatActivity {
 
     public void teacherFragments() {
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new EventsTeacherFragment()).commit();
+    }
+    public void lessonFragments() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new TeacherLessonFragment()).commit();
     }
 
     private TextView mTextMessage;
