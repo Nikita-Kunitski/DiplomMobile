@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.diplom.uedec.diplommobile.DetailEventActivity;
 import com.diplom.uedec.diplommobile.R;
@@ -25,9 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by uedec on 08.05.2019.
- */
+
 
 public class EventsStudentFragment extends Fragment implements DataEventsAdapter.onEventListner {
 
@@ -45,10 +44,12 @@ public class EventsStudentFragment extends Fragment implements DataEventsAdapter
     {
         DataEventsAdapter adapter = new DataEventsAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
     }
 
      List<EventWithAllMembers> result;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState)
@@ -59,7 +60,7 @@ public class EventsStudentFragment extends Fragment implements DataEventsAdapter
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
                 .build();
-
+        progressBar=view.findViewById(R.id.progressBar5);
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.BASE_URL))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -69,6 +70,7 @@ public class EventsStudentFragment extends Fragment implements DataEventsAdapter
         REST REST =retrofit.create(REST.class);
         Call<List<EventWithAllMembers>> call= REST.getAllEvents();
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
             @Override
             public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {

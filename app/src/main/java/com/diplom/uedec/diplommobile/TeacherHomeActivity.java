@@ -14,6 +14,10 @@ import com.diplom.uedec.diplommobile.fragments.teacher.TeacherLessonFragment;
 
 public class TeacherHomeActivity extends AppCompatActivity {
 
+    public void lessonFragments() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new TeacherLessonFragment()).commit();
+    }
+
     private TextView mTextMessage;
     BottomNavigationView navigation;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -42,6 +46,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Должник БГТУ");
         setContentView(R.layout.activity_teacher_home);
 
         mTextMessage = (TextView) findViewById(R.id.message);

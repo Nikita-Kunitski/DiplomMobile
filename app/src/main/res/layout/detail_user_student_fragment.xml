@@ -148,6 +148,8 @@
         android:layout_marginTop="25dp"
         android:backgroundTint="@android:color/holo_red_light"
         android:text="Сменить пользователя"
+        android:background="@drawable/around"
+        android:textColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"

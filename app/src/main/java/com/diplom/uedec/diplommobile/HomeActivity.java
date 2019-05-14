@@ -37,9 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     public void teacherFragments() {
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new EventsTeacherFragment()).commit();
     }
-    public void lessonFragments() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new TeacherLessonFragment()).commit();
-    }
+
 
     private TextView mTextMessage;
 
@@ -69,18 +67,19 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    BottomNavigationView navigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
             navigation.setSelectedItemId(R.id.home_student);
-       /* getSupportFragmentManager().beginTransaction()
+       getSupportFragmentManager().beginTransaction()
                 .add(R.id.home_container, new EventsStudentFragment())
-                .commit();*/
+                .commit();
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }

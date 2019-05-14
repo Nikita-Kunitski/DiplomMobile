@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.diplom.uedec.diplommobile.DetailSubscribeAndDeleteActivity;
@@ -111,11 +112,13 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
     {
         DataEventsAdapter adapter = new DataEventsAdapter(getContext(), mresult, this);
         recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
     }
 
     TextView message;
     List<EventWithAllMembers> m_eventWithAllMembers;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState)
@@ -123,6 +126,7 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
         View view = inflater.inflate(R.layout.mysubscribes_fragment, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.mySubscribesList);
         message = view.findViewById(R.id.message_);
+        progressBar.setVisibility(View.VISIBLE);
         new getMySubscribes().execute();
 
         return view;

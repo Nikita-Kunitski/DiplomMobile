@@ -19,6 +19,7 @@ import com.diplom.uedec.diplommobile.HomeActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataEventsAdapter;
 import com.diplom.uedec.diplommobile.RecyclerViewAdapters.DataLessonsAdapter;
+import com.diplom.uedec.diplommobile.TeacherHomeActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.Lesson;
@@ -74,6 +75,7 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
                         {
                             Toast.makeText(getActivity(), "Удаление выполнено успешно", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
+                            ((TeacherHomeActivity)getActivity()).lessonFragments();
                         }
                     }
 
@@ -173,7 +175,7 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
                     }
                     final String[] arr = new String[App.lessons.size()];
                     lessonString.toArray(arr);
-                    builder.setTitle("Предмет")
+                    builder.setTitle("Добавление предмета")
                             .setCancelable(false)
                             .setNeutralButton("Назад", new DialogInterface.OnClickListener() {
                                 @Override
