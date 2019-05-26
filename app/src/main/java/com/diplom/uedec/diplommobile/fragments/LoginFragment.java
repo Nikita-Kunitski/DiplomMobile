@@ -48,8 +48,9 @@ public class LoginFragment extends Fragment {
                 .readTimeout(30,TimeUnit.SECONDS)
                 .build();
 
-        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).
-                client(okHttpClient)
+        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
         REST REST =retrofit.create(REST.class);
         Call<ApplicationUser> call = REST.Auth(email,password);

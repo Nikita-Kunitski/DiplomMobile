@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.diplom.uedec.diplommobile.data.App;
+import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.data.entity.Auditorium;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.Lesson;
@@ -57,9 +58,10 @@ public class CreateEventActivity extends AppCompatActivity {
     DatePickerDialog picker;
     TimePickerDialog start,end;
     ProgressBar progressBar;
-    EditText date, startTime, endTime,lesson, auditorium, countPeople;
+    EditText date, startTime, endTime,lesson, auditorium, countPeople, students;
     TeacherData teacherData;
     Button create;
+    ArrayList<ApplicationUser> studentsToRequest;
     int auditoriumId, lessonId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,8 @@ public class CreateEventActivity extends AppCompatActivity {
         progressBar =findViewById(R.id.progressBar3);
         create=findViewById(R.id.create);
         countPeople=findViewById(R.id.countPeople);
-
+        students=findViewById(R.id.students);
+        studentsToRequest=new ArrayList<>();
         OkHttpClient client1 = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
@@ -238,6 +241,48 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        students.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(CreateEventActivity.this);
+                final ArrayList<String> studentString=new ArrayList<>();
+                for (ApplicationUser item:teacherData.students
+                     ) {
+                    studentString.add(item.getEmail());
+                }
+                studentsToRequest.retainAll(studentsToRequest);
+                final String [] arr = new String[teacherData.students.size()];
+                final boolean []arr_flag=new boolean[teacherData.students.size()];
+                studentString.toArray(arr);
+                builder.setTitle("Студенты")
+                        .setMultiChoiceItems(arr, arr_flag, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                                arr_flag[i]=b;
+                            }
+                        })
+                        .setCancelable(false)
+                        .setNeutralButton("Назад", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for(int j=0;j<teacherData.students.size();j++)
+                        {
+                            if(arr_flag[j]==true)
+                            {
+                                studentsToRequest.add(teacherData.students.get(j));
+                            }
+                        }
+                    }
+                }).show();
+
+            }
+        });
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,24 +306,36 @@ public class CreateEventActivity extends AppCompatActivity {
                                                                                 App.user.getId(),
                                                                                 auditorium,
                                                                                 App.user,
-                                                                                lesson);
-                Call<EventWithAllMembers> call=rest.Create(eventWithAllMembers);
-                call.enqueue(new Callback<EventWithAllMembers>() {
+                                                                                lesson,
+                                                                                studentsToRequest);
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .readTimeout(30,TimeUnit.SECONDS)
+                        .build();
+
+                final Retrofit retrofit1=new Retrofit.Builder()
+                        .baseUrl(getResources().getString(R.string.BASE_URL))
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(client)
+                        .build();
+                final REST rest=retrofit1.create(REST.class);
+                Call<Void> call=rest.Create(eventWithAllMembers);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<EventWithAllMembers> call, Response<EventWithAllMembers> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.i("responce-message",response.code()+" "+response.raw().message());
                         if(response.code()==200)
                         {
 
-                            EventWithAllMembers eventWithAllMembers1=response.body();
+                           /* EventWithAllMembers eventWithAllMembers1=response.body();*/
                             Toast.makeText(CreateEventActivity.this,"Удача",Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(CreateEventActivity.this,HomeActivity.class);
+                            Intent intent=new Intent(CreateEventActivity.this,TeacherHomeActivity.class);
                             startActivity(intent);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<EventWithAllMembers> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         Log.i("responce-failure",t.getMessage());
                     }
                 });

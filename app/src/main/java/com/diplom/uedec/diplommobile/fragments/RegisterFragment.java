@@ -14,14 +14,13 @@ import android.widget.Toast;
 import com.diplom.uedec.diplommobile.MainActivity;
 import com.diplom.uedec.diplommobile.R;
 import com.diplom.uedec.diplommobile.retrofit.REST;
-import com.diplom.uedec.diplommobile.retrofit.RequestRegisterStudent;
+import com.diplom.uedec.diplommobile.data.entity.RequestRegisterStudent;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
 public class RegisterFragment extends Fragment {

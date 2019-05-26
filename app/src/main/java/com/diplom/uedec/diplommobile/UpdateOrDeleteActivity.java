@@ -324,14 +324,14 @@ public class UpdateOrDeleteActivity extends AppCompatActivity {
                         if(response.code()==200)
                         {
                             Toast.makeText(UpdateOrDeleteActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(UpdateOrDeleteActivity.this, HomeActivity.class);
+                            Intent intent=new Intent(UpdateOrDeleteActivity.this, TeacherHomeActivity.class);
                             startActivity(intent);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-
+                        Log.i("responce-message",t.getMessage());
                     }
                 });
             }

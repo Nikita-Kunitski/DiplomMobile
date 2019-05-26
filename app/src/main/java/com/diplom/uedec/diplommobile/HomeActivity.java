@@ -75,9 +75,8 @@ public class HomeActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
-            navigation.setSelectedItemId(R.id.home_student);
-       getSupportFragmentManager().beginTransaction()
+        navigation.setSelectedItemId(R.id.home_student);
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.home_container, new EventsStudentFragment())
                 .commit();
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

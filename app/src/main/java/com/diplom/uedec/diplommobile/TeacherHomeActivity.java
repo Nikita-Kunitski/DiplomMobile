@@ -51,11 +51,11 @@ public class TeacherHomeActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.home_teacher);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.home_container, new EventsTeacherFragment())
                 .commit();
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
 }

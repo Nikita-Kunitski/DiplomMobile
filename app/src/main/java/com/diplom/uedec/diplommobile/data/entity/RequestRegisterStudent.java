@@ -1,4 +1,4 @@
-package com.diplom.uedec.diplommobile.retrofit;
+package com.diplom.uedec.diplommobile.data.entity;
 
 public class RequestRegisterStudent {
     private String Email;

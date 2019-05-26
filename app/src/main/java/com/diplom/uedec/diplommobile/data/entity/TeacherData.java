@@ -25,6 +25,10 @@ public class TeacherData implements Parcelable {
     @Expose
     @Embedded
     public List<Lesson> lessons;
+    @SerializedName("Students")
+    @Expose
+    @Embedded
+    public List<ApplicationUser> students;
 
     protected TeacherData(Parcel in) {
         if (in.readByte() == 0x01) {
@@ -44,6 +48,12 @@ public class TeacherData implements Parcelable {
             in.readList(lessons, Lesson.class.getClassLoader());
         } else {
             lessons = null;
+        }
+        if (in.readByte() == 0x01) {
+            students = new ArrayList<>();
+            in.readList(students, ApplicationUser.class.getClassLoader());
+        } else {
+            students = null;
         }
     }
 
@@ -71,6 +81,12 @@ public class TeacherData implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(lessons);
+        }
+        if (students == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(students);
         }
     }
 

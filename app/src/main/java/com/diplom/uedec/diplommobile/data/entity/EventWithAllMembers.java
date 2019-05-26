@@ -8,11 +8,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-/**
- * Created by uedec on 09.05.2019.
- */
 
 public class EventWithAllMembers implements Parcelable {
     @SerializedName("Id")
@@ -66,6 +65,11 @@ public class EventWithAllMembers implements Parcelable {
     @Embedded
     public Lesson lesson;
 
+    @SerializedName("StudentsNeeds")
+    @Expose
+    @Embedded
+    public List<ApplicationUser> students;
+
     public EventWithAllMembers(int id, Date date, Date startTime, Date endTime, int countPeople, int lessonId, String eventName, int auditoriumId, String teacheId, Auditorium auditorium, ApplicationUser teacher, Lesson lesson) {
         this.id = id;
         this.date = date;
@@ -81,6 +85,21 @@ public class EventWithAllMembers implements Parcelable {
         this.lesson = lesson;
     }
 
+    public EventWithAllMembers( Date date, Date startTime, Date endTime, int countPeople, int lessonId, String eventName, int auditoriumId, String teacheId, Auditorium auditorium, ApplicationUser teacher, Lesson lesson, List<ApplicationUser> students) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.countPeople = countPeople;
+        this.lessonId = lessonId;
+        this.eventName = eventName;
+        this.auditoriumId = auditoriumId;
+        this.teacheId = teacheId;
+        this.auditorium = auditorium;
+        this.teacher = teacher;
+        this.lesson = lesson;
+        this.students=students;
+    }
+
     public EventWithAllMembers( Date date, Date startTime, Date endTime, int countPeople, int lessonId, String eventName, int auditoriumId, String teacheId, Auditorium auditorium, ApplicationUser teacher, Lesson lesson) {
         this.date = date;
         this.startTime = startTime;
@@ -94,6 +113,7 @@ public class EventWithAllMembers implements Parcelable {
         this.teacher = teacher;
         this.lesson = lesson;
     }
+
     protected EventWithAllMembers(Parcel in) {
         id = in.readInt();
         long tmpDate = in.readLong();
@@ -110,6 +130,12 @@ public class EventWithAllMembers implements Parcelable {
         auditorium = (Auditorium) in.readValue(Auditorium.class.getClassLoader());
         teacher = (ApplicationUser) in.readValue(ApplicationUser.class.getClassLoader());
         lesson = (Lesson) in.readValue(Lesson.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            students = new ArrayList<>();
+            in.readList(students, ApplicationUser.class.getClassLoader());
+        } else {
+            students = null;
+        }
     }
 
     @Override
@@ -131,6 +157,12 @@ public class EventWithAllMembers implements Parcelable {
         dest.writeValue(auditorium);
         dest.writeValue(teacher);
         dest.writeValue(lesson);
+        if (students == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(students);
+        }
     }
 
     @SuppressWarnings("unused")
