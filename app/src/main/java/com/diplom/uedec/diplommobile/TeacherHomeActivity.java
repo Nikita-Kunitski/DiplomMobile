@@ -1,5 +1,9 @@
 package com.diplom.uedec.diplommobile;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.fragments.student.EventsStudentFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.DetailUserTeacherFragment;
 import com.diplom.uedec.diplommobile.fragments.teacher.EventsTeacherFragment;
@@ -55,4 +60,32 @@ public class TeacherHomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(
+                TeacherHomeActivity.this);
+        quitDialog.setTitle("Хотите выйти из аккаунта?");
+
+        quitDialog.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences sPreference;
+                sPreference=getSharedPreferences(App.APP_PREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed=sPreference.edit();
+                ed.remove("ROLE");
+                ed.remove("USER");
+                ed.commit();
+                finish();
+            }
+        });
+
+        quitDialog.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        quitDialog.show();
+
+    }
 }
