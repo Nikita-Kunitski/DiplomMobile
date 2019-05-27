@@ -60,4 +60,6 @@ public interface REST {
     @POST("api/teacher/lesson/delete")
     Call<Void> Unsubscribe(@Body TeacherLesson teacherLesson);
 
+    @GET("api/students/subscribes")
+    Call<List<EventWithAllMembers>> GetStudentsSubscribes(@Query("id")String id);
 }

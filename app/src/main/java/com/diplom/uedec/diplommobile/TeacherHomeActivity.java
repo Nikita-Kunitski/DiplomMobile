@@ -28,13 +28,10 @@ public class TeacherHomeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home_teacher:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new EventsTeacherFragment()).commit();
-
-                    //TODO изменить выхов фрагментаs
                     return true;
                 case R.id.detail_teacher:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new DetailUserTeacherFragment()).commit();
                     return true;
-
                 case R.id.teacher_lesson:
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container,new TeacherLessonFragment()).commit();
                     return true;

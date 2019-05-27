@@ -52,28 +52,37 @@ public class EventsTeacherFragment extends Fragment implements DataEventsAdapter
     List<EventWithAllMembers> result;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    OkHttpClient client;
+    Retrofit retrofit;
+    REST rest;
+    Call<List<EventWithAllMembers>> call;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS)
+                .build();
+
+        retrofit=new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.BASE_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        rest =retrofit.create(REST.class);
+        call= rest.getAllEventsTeacher(App.user.getId());
+        result=null;
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.events_teacher_fragment, container, false);
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30,TimeUnit.SECONDS)
-                .build();
-
         fab  = (FloatingActionButton) view.findViewById(R.id.fab);
 
         progressBar=view.findViewById(R.id.progressBar5);
-
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.BASE_URL))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        REST REST =retrofit.create(REST.class);
-        Call<List<EventWithAllMembers>> call= REST.getAllEventsTeacher(App.user.getId());
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<EventWithAllMembers>>() {
@@ -99,8 +108,13 @@ public class EventsTeacherFragment extends Fragment implements DataEventsAdapter
                 startActivity(intent);
             }
         });
-
-
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        if(result==null)
+            call.cancel();
+        super.onStop();
     }
 }

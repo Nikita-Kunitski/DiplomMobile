@@ -3,6 +3,7 @@ package com.diplom.uedec.diplommobile.fragments.student;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.diplom.uedec.diplommobile.data.entity.Event;
 import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
+import com.diplom.uedec.diplommobile.retrofit.REST;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,6 +37,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by uedec on 08.05.2019.
@@ -51,7 +61,7 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
         startActivity(intent);
     }
 
-    class getMySubscribes extends AsyncTask<Void,Void,List<EventWithAllMembers>>
+    /*class getMySubscribes extends AsyncTask<Void,Void,List<EventWithAllMembers>>
     {
         @Override
         protected void onPostExecute(List<EventWithAllMembers> eventWithAllMembers) {
@@ -106,7 +116,7 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
             return listEvents;
 
         }
-    }
+    }*/
 
     public void SetAdapter(List<EventWithAllMembers> mresult)
     {
@@ -119,6 +129,30 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
     List<EventWithAllMembers> m_eventWithAllMembers;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    OkHttpClient okHttpClient;
+    Retrofit retrofit;
+    REST REST;
+    Call<List<EventWithAllMembers>> call;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS)
+                .build();
+        retrofit=new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.BASE_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+        REST =retrofit.create(REST.class);
+        call=REST.GetStudentsSubscribes(App.user.getId());
+        m_eventWithAllMembers=null;
+        super.onCreate(savedInstanceState);
+
+    }
+
+
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState)
@@ -126,9 +160,33 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
         View view = inflater.inflate(R.layout.mysubscribes_fragment, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.mySubscribesList);
         message = view.findViewById(R.id.message_);
+        progressBar= view.findViewById(R.id.progressBar5);
         progressBar.setVisibility(View.VISIBLE);
-        new getMySubscribes().execute();
+        //new getMySubscribes().execute();
+        call.enqueue(new Callback<List<EventWithAllMembers>>() {
+            @Override
+            public void onResponse(Call<List<EventWithAllMembers>> call, Response<List<EventWithAllMembers>> response) {
+                if(response.code()==200)
+                {
+                    m_eventWithAllMembers=response.body();
+                    SetAdapter(m_eventWithAllMembers);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<EventWithAllMembers>> call, Throwable t) {
+
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        if(m_eventWithAllMembers==null)
+            call.cancel();
+        super.onStop();
     }
 }

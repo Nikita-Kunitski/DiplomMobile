@@ -36,54 +36,5 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new LoginFragment())
                     .commit();
         }
-        /*
-        AuditoriumTypeDao auditoriumTypeDao=db.auditoriumTypeDao();
-        AuditoriumDao auditoriumDao=db.auditoriumDao();
-        ApplicationUserDao applicationUserDao=db.applicationUserDao();
-        LessonDao lessonDao=db.lessonDao();
-        EventDao eventDao=db.eventDao();
-        StudentEventDao studentEventDao=db.studentEventDao();*/
-        /*AuditoriumType auditoriumType=new AuditoriumType();
-        auditoriumType.setId(1);
-        auditoriumType.setAuditoriumAbbreviation("ЛК");
-        auditoriumType.setAuditoriumName("Лекционная");
-        auditoriumTypeDao.insert(auditoriumType);
-
-        Auditorium auditorium=new Auditorium();
-        auditorium.setId(1);
-        auditorium.setAuditoriumCapacity(10);
-        auditorium.setAuditoriumName("301");
-        auditorium.setAuditoriumTypeId(1);
-        auditoriumDao.insert(auditorium);
-
-        Lesson lesson=new Lesson();
-        lesson.setId(1);
-        lesson.setCourse(2);
-        lesson.setAbbreviation("СУБД");
-        lesson.setName("Система управления базами данных");
-        lessonDao.insert(lesson);
-
-        ApplicationUser teacher=new ApplicationUser();
-        teacher.setId(1);
-        teacher.setEmail("teacher@gmail.com");
-        applicationUserDao.insert(teacher);
-
-        Event event=new Event();
-        event.setId(1);
-        event.setDate("2019-05-05");
-        event.setStartTime("10:25:00");
-        event.setEndTime("11:25:00");
-        event.setLessonId(1);
-        event.setAuditoriumId(1);
-        event.setTeacherId(1);
-        eventDao.insert(event);
-
-        StudentEvent studentEvent=new StudentEvent(teacher.getId(),event.getId());
-        studentEventDao.insert(studentEvent);
-        List<Event> list=eventDao.getAll();
-
-
-        List<EventWithStudents>list1=eventDao.getEventWithStudents();
-        event.getDate();*/
     }
 }

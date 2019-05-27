@@ -54,7 +54,7 @@ public class DetailEventActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.i("responce-message",response.raw().message());
                 Toast.makeText(getApplicationContext(),"Вы записались на это занятие",Toast.LENGTH_SHORT).show();
-                new WriteToDataBase().execute(eventWithAllMembers);
+                //new WriteToDataBase().execute(eventWithAllMembers);
                 Intent intent=new Intent(DetailEventActivity.this,HomeActivity.class);
                 startActivity(intent);
             }

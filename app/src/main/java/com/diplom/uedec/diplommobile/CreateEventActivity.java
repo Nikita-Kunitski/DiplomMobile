@@ -327,7 +327,7 @@ public class CreateEventActivity extends AppCompatActivity {
                         if(response.code()==200)
                         {
 
-                           /* EventWithAllMembers eventWithAllMembers1=response.body();*/
+                           /* EventWithAllMembers eventWithAllMembers1=response.body();*///TODO пересмотреть момент с возвратом данных
                             Toast.makeText(CreateEventActivity.this,"Удача",Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(CreateEventActivity.this,TeacherHomeActivity.class);
                             startActivity(intent);

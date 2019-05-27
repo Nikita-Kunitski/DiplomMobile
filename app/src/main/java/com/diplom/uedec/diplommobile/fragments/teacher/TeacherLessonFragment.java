@@ -108,28 +108,47 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
     RecyclerView recyclerView;
     ProgressBar progressBar;
     int lessonId=-1;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.teacher_lessons_fragment, container, false);
+    OkHttpClient client;
+    Retrofit retrofit;
+    REST REST;
+    Call<List<Lesson>> call,call1;
 
-        OkHttpClient client = new OkHttpClient.Builder()
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
                 .build();
-
-        fab  = (FloatingActionButton) view.findViewById(R.id.fab);
-        progressBar=(ProgressBar) view.findViewById(R.id.progressBar4);
-        Retrofit retrofit=new Retrofit.Builder()
+        retrofit=new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.BASE_URL))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
+        REST =retrofit.create(REST.class);
+        call = REST.getLessons(App.user.getId());
+        result=null;
+        super.onCreate(savedInstanceState);
+    }
 
-        final REST REST =retrofit.create(REST.class);
-        Call<List<Lesson>> call = REST.getLessons(App.user.getId());
+    @Override
+    public void onStop() {
+        if(result==null)
+            call.cancel();
+        if(App.lessons==null)
+            call1.cancel();
+        super.onStop();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.teacher_lessons_fragment, container, false);
+        App.lessons=null;
+        fab  = (FloatingActionButton) view.findViewById(R.id.fab);
+        progressBar=(ProgressBar) view.findViewById(R.id.progressBar4);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView = (RecyclerView)view.findViewById(R.id.list);
+
         call.enqueue(new Callback<List<Lesson>>() {
             @Override
             public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
@@ -147,7 +166,7 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
             }
         });
 
-        Call<List<Lesson>> call1 = REST.getAllLessons(App.user.getId());
+        call1 = REST.getAllLessons(App.user.getId());
         call1.enqueue(new Callback<List<Lesson>>() {
             @Override
             public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
