@@ -38,6 +38,7 @@ public class App extends Application {
     public static String token;
     public static ApplicationUser user;
     public static List<Lesson> lessons;
+    public static final String APP_PREFERENCES = "mysettings";
     private AppDatabase database;
 
     @Override

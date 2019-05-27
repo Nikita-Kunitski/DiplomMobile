@@ -1,6 +1,8 @@
 package com.diplom.uedec.diplommobile.fragments.student;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -57,6 +59,11 @@ public class DetailUserStudentFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences spref=getActivity().getSharedPreferences(App.APP_PREFERENCES,Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed=spref.edit();
+                ed.putString("ROLE","");
+                ed.putString("USER","");
+                ed.commit();
                 Intent intent=new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }

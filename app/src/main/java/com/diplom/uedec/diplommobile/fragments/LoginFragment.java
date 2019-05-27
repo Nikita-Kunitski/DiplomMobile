@@ -1,8 +1,11 @@
 package com.diplom.uedec.diplommobile.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +25,7 @@ import com.diplom.uedec.diplommobile.TeacherHomeActivity;
 import com.diplom.uedec.diplommobile.data.App;
 import com.diplom.uedec.diplommobile.data.entity.ApplicationUser;
 import com.diplom.uedec.diplommobile.retrofit.REST;
+import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,8 +45,33 @@ public class LoginFragment extends Fragment {
     TextInputEditText email,password;
     Button login, register;
     ProgressBar progressBar;
+    SharedPreferences sPreference;
+    Gson gson;
+    final String ROLE="ROLE";
+    final String USER="USER";
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        gson=new Gson();
+        sPreference=getActivity().getSharedPreferences(App.APP_PREFERENCES,Context.MODE_PRIVATE);
+        String str=sPreference.getString(ROLE,"");
+        if(str!="")
+        {
+                App.user=gson.fromJson(sPreference.getString(USER,""),ApplicationUser.class);
+                App.role=str;
+                if(str.equals("teacher")) {
+                    Intent intent = new Intent(getActivity(), TeacherHomeActivity.class);
+                    startActivity(intent);
+                }
+                if(str.equals("student")) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+                }
 
-    public void authentication(String email,String password){
+        }
+        super.onCreate(savedInstanceState);
+    }
+
+    public void authentication(String email, String password){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
@@ -67,6 +96,12 @@ public class LoginFragment extends Fragment {
                 if(response.raw().message().equals("OK")){
                     App.user=response.body();
                     App.role=response.headers().get("Role");
+
+                    String curUser=gson.toJson(App.user);
+                    SharedPreferences.Editor ed=sPreference.edit();
+                    ed.putString(ROLE,App.role);
+                    ed.putString(USER,curUser);
+                    ed.commit();
                     if(App.role.equals("student"))
                     {
                     Intent intent = new Intent(getActivity(), HomeActivity.class);

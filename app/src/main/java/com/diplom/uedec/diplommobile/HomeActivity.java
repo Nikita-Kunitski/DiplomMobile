@@ -71,6 +71,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Должник БГТУ");
         setContentView(R.layout.activity_home);
 
         mTextMessage = (TextView) findViewById(R.id.message);
