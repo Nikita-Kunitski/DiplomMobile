@@ -61,8 +61,9 @@ public class DetailUserStudentFragment extends Fragment {
             public void onClick(View view) {
                 SharedPreferences spref=getActivity().getSharedPreferences(App.APP_PREFERENCES,Context.MODE_PRIVATE);
                 SharedPreferences.Editor ed=spref.edit();
-                ed.putString("ROLE","");
-                ed.putString("USER","");
+                ed.putString(App.ROLE,"");
+                ed.putString(App.USER,"");
+                ed.putString(App.TOKEN,"");
                 ed.commit();
                 Intent intent=new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);

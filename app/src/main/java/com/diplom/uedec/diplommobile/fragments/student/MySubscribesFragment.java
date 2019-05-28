@@ -1,6 +1,7 @@
 package com.diplom.uedec.diplommobile.fragments.student;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,12 +41,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by uedec on 08.05.2019.
@@ -133,12 +139,24 @@ public class MySubscribesFragment extends Fragment implements DataEventsAdapter.
     Retrofit retrofit;
     REST REST;
     Call<List<EventWithAllMembers>> call;
+    SharedPreferences sPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        sPref=getActivity().getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+        final String token=sPref.getString(App.TOKEN,"");
         okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest  = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
                 .build();
         retrofit=new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.BASE_URL))

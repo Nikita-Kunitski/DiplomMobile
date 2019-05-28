@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.TeacherData;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +63,7 @@ public class UpdateOrDeleteActivity extends AppCompatActivity {
     Button update, delete;
     int auditoriumId, lessonId;
     EventWithAllMembers eventWithAllMembers;
+    SharedPreferences sPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +95,20 @@ public class UpdateOrDeleteActivity extends AppCompatActivity {
         delete=findViewById(R.id.delete);
 
 
+        sPref=getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+        final String token=sPref.getString(App.TOKEN,"");
         OkHttpClient client1 = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest  = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
                 .build();
 
         final Retrofit retrofit1=new Retrofit.Builder()

@@ -2,6 +2,7 @@ package com.diplom.uedec.diplommobile.fragments.teacher;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,16 +27,21 @@ import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.TeacherLesson;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by uedec on 14.05.2019.
@@ -53,9 +59,20 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
         ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                sPref=getActivity().getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+                final String token=sPref.getString(App.TOKEN,"");
                 OkHttpClient client = new OkHttpClient.Builder()
                         .connectTimeout(30, TimeUnit.SECONDS)
                         .readTimeout(30,TimeUnit.SECONDS)
+                        .addInterceptor(new Interceptor() {
+                            @Override
+                            public okhttp3.Response intercept(Chain chain) throws IOException {
+                                Request newRequest  = chain.request().newBuilder()
+                                        .addHeader("Authorization", "Bearer " + token)
+                                        .build();
+                                return chain.proceed(newRequest);
+                            }
+                        })
                         .build();
 
                 Retrofit retrofit=new Retrofit.Builder()
@@ -77,11 +94,12 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
                             progressBar.setVisibility(View.GONE);
                             ((TeacherHomeActivity)getActivity()).lessonFragments();
                         }
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -112,12 +130,24 @@ public class TeacherLessonFragment extends Fragment implements DataLessonsAdapte
     Retrofit retrofit;
     REST REST;
     Call<List<Lesson>> call,call1;
+    SharedPreferences sPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        sPref=getActivity().getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+        final String token=sPref.getString(App.TOKEN,"");
         client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest  = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
                 .build();
         retrofit=new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.BASE_URL))

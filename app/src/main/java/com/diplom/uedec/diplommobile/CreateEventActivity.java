@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.drm.DrmStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import com.diplom.uedec.diplommobile.data.entity.Lesson;
 import com.diplom.uedec.diplommobile.data.entity.TeacherData;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +37,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,12 +67,14 @@ public class CreateEventActivity extends AppCompatActivity {
     Button create;
     ArrayList<ApplicationUser> studentsToRequest;
     int auditoriumId, lessonId;
+    SharedPreferences sPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Создание нового занятия");
         setContentView(R.layout.activity_create_event);
-
+        sPref=getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+        final String token=sPref.getString(App.TOKEN,"");
         date=findViewById(R.id.eventDate);
         startTime = findViewById(R.id.eventStartTime);
         endTime=findViewById(R.id. eventEndTime);
@@ -82,6 +88,15 @@ public class CreateEventActivity extends AppCompatActivity {
         OkHttpClient client1 = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30,TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest  = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
                 .build();
 
         final Retrofit retrofit1=new Retrofit.Builder()
@@ -308,9 +323,19 @@ public class CreateEventActivity extends AppCompatActivity {
                                                                                 App.user,
                                                                                 lesson,
                                                                                 studentsToRequest);
+
                 OkHttpClient client = new OkHttpClient.Builder()
                         .connectTimeout(30, TimeUnit.SECONDS)
                         .readTimeout(30,TimeUnit.SECONDS)
+                        .addInterceptor(new Interceptor() {
+                            @Override
+                            public okhttp3.Response intercept(Chain chain) throws IOException {
+                                Request newRequest  = chain.request().newBuilder()
+                                        .addHeader("Authorization", "Bearer " + token)
+                                        .build();
+                                return chain.proceed(newRequest);
+                            }
+                        })
                         .build();
 
                 final Retrofit retrofit1=new Retrofit.Builder()

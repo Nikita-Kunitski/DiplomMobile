@@ -39,6 +39,9 @@ public class App extends Application {
     public static ApplicationUser user;
     public static List<Lesson> lessons;
     public static final String APP_PREFERENCES = "mysettings";
+    public static String ROLE="ROLE";
+    public static String USER="USER";
+    public static String TOKEN="TOKEN";
     private AppDatabase database;
 
     @Override

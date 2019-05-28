@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,9 +22,14 @@ import com.diplom.uedec.diplommobile.data.entity.EventWithAllMembers;
 import com.diplom.uedec.diplommobile.data.entity.StudentEvent;
 import com.diplom.uedec.diplommobile.retrofit.REST;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +39,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DetailSubscribeAndDeleteActivity extends AppCompatActivity {
 
     public void Unsubscribe(){
-        Retrofit retrofit=new Retrofit.Builder().baseUrl(getResources().getString(R.string.BASE_URL)).addConverterFactory(GsonConverterFactory.create()).build();
+        sPref=getSharedPreferences(App.APP_PREFERENCES,MODE_PRIVATE);
+        final String token=sPref.getString(App.TOKEN,"");
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30,TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest  = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        Retrofit retrofit=new Retrofit.Builder()
+                            .baseUrl(getResources().getString(R.string.BASE_URL))
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .client(okHttpClient)
+                            .build();
         REST REST =retrofit.create(REST.class);
         StudentEvent studentEvent=new StudentEvent(App.user.getId(),eventWithAllMembers.id);
         Call<Void> call = REST.Unsubscribe(studentEvent);
@@ -58,6 +83,7 @@ public class DetailSubscribeAndDeleteActivity extends AppCompatActivity {
     EventWithAllMembers eventWithAllMembers;
     TextView eventName, dateAndTime, auditorium, lesson, teacher;
     AlertDialog.Builder ad;
+    SharedPreferences sPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

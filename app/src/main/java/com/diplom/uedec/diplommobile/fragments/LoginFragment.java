@@ -47,16 +47,15 @@ public class LoginFragment extends Fragment {
     ProgressBar progressBar;
     SharedPreferences sPreference;
     Gson gson;
-    final String ROLE="ROLE";
-    final String USER="USER";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         gson=new Gson();
         sPreference=getActivity().getSharedPreferences(App.APP_PREFERENCES,Context.MODE_PRIVATE);
-        String str=sPreference.getString(ROLE,"");
+        String str=sPreference.getString(App.ROLE,"");
         if(str!="")
         {
-                App.user=gson.fromJson(sPreference.getString(USER,""),ApplicationUser.class);
+                App.user=gson.fromJson(sPreference.getString(App.USER,""),ApplicationUser.class);
                 App.role=str;
                 if(str.equals("teacher")) {
                     Intent intent = new Intent(getActivity(), TeacherHomeActivity.class);
@@ -99,8 +98,9 @@ public class LoginFragment extends Fragment {
 
                     String curUser=gson.toJson(App.user);
                     SharedPreferences.Editor ed=sPreference.edit();
-                    ed.putString(ROLE,App.role);
-                    ed.putString(USER,curUser);
+                    ed.putString(App.ROLE,App.role);
+                    ed.putString(App.USER,curUser);
+                    ed.putString(App.TOKEN,response.headers().get("Token"));
                     ed.commit();
                     if(App.role.equals("student"))
                     {
